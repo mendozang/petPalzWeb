@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+  <body>
+    <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+      <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+        (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+      <header>
+        <h1>Mascota</h1>
+      </header>
+      <div class="body-trimmed">
+        <section class="main-sections">
+          <section class="added-pets">
+            <div class="added-pets-top">
+              <h2>Mascotas añadidas</h2>
+              <button mat-flat-button class="mat-button">Añadir mascota
+                <mat-icon matSuffix>add</mat-icon>
+              </button>
+            </div>
+            <div class="added-pets-body">
+              <div class="pet">
+                <img src="https://cdn.myportfolio.com/c728a553-9706-473c-adca-fa2ea3652db5/a124d74e-ff6c-4949-aa4f-ea4d43b71224_rw_1200.jpg?h=2a9066a9cacc857be72862cc4e3beb64" alt="imagen perro default">
+                <div class="pet-details">
+                  <div class="pet-header">
+                    <h4>Nombre</h4>
+                    <mat-icon matSuffix class="vert-icon">more_vert</mat-icon>
+                  </div>
+                  <h6>Raza</h6>
+                  <button mat-flat-button class="pet-more-btn"><a routerLink="mascota-detalles">Ver más</a></button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="calendar">
+            <div class="calendar-top">
+              <h2>Calendario</h2>
+              <button mat-flat-button class="mat-button">Añadir recordatorio
+                <mat-icon matSuffix>add</mat-icon>
+              </button>
+            </div>
+            <div class="calendar-body"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Guías de primeros auxilios</h1>
+    </header>
+    <div class="body-trimmed">
+      <div class="search-bar">
+        <div class="input-group input-group-lg">
+          <input type="text" class="form-control rounded" placeholder="Buscar" aria-label="Buscar"
+            aria-describedby="search-addon" />
+          <span class="input-group-text" id="search-addon"><mat-icon matSuffix>search</mat-icon></span>
+        </div>
+      </div>
+
+      <section class="categories">
+        <div class="categories-top">
+          <div class="category">
+            <img src="https://i.postimg.cc/9MnHV1Zx/tubo-de-ensayo.png" alt="illustracion tubo de ensayo">
+            <h4>Heridas y hemorragias</h4>
+            <div class="category-row"><a routerLink="guias-detalles">
+              <h6>Cómo detener el sangrado y limpiar heridas</h6>
+              <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+            </a>
+            </div>
+          </div>
+          <div class="category">
+            <img src="https://i.postimg.cc/C11pW9BB/alimentos-para-mascotas.png"
+              alt="ilustracion alimentos de mascotas">
+            <h4>Asfixia</h4>
+            <div class="category-row"><a routerLink="guias-detalles">
+              <h6>Qué hacer si tu mascota está atragantada</h6>
+              <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+            </a>
+            </div>
+          </div>
+          <div class="category">
+            <img src="https://i.postimg.cc/L8tSftFX/kit-de-primeros-auxilios.png"
+              alt="ilustracion kit de primeros auxilios">
+            <h4>Intoxicación</h4>
+            <div class="category-row"><a routerLink="guias-detalles">
+              <h6>Qué pasos seguir según el tóxico involucrado</h6>
+              <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+            </a>
+          
+            </div>
+          </div>
+        </div>
+        <div class="categories-bottom">
+          <div class="category">
+            <img src="https://i.postimg.cc/YS8wDt9B/veterinario.png"
+              alt="ilustracion kit de veterinario y gato">
+            <h4>Convulsiones</h4>
+            <div class="category-row"><a routerLink="guias-detalles">
+              <h6>Cómo actuar mientras ocurre un episodio</h6>
+              <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+            </a>
+            </div>
+          </div>
+          <div class="category">
+            <img src="https://i.postimg.cc/1zyQK8yK/parche.png"
+              alt="ilustracion parche mascota">
+            <h4>Fracturas y golpes</h4>
+            <div class="category-row"><a routerLink="guias-detalles">
+              <h6>Inmovilización temporal y transporte seguro</h6>
+              <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+            </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Configuración</h1>
+    </header>
+    <div class="body-trimmed">
+      <section class="main-sections">
+        <div class="profile">
+          <div class="profile-img">
+            <img class="user-img"
+              src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"
+              alt="imagen default">
+          </div>
+          <div class="profile-resume">
+            <div class="resume-titles">
+              <h3>Usuario</h3>
+              <h6><a routerLink="/login">Iniciar Sesión</a></h6>
+            </div>
+            <div class="resume-content">
+              <div class="content-one">
+                <mat-icon matSuffix class="icon-top">mail</mat-icon>
+                <p>Correo electronico</p>
+              </div>
+              <div class="content-one">
+                <mat-icon matSuffix class="icon-top">phone</mat-icon>
+                <p>Teléfono</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-config">
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">account_circle</mat-icon>
+              <p>Sobre mi</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">settings</mat-icon>
+              <p>Configuración avanzada</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">location_on</mat-icon>
+              <p>Dirección</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">watch</mat-icon>
+              <p>Configuración de collar</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">notifications</mat-icon>
+              <p>Notificaciones</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

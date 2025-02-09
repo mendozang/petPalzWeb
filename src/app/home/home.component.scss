@@ -1,0 +1,308 @@
+@import "../../styles.scss";
+
+.home-container {
+  background-color: $page-color;
+  padding-top: 5rem;
+}
+
+/* Barra de navegación */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 1rem 1.5rem;
+  background-color: $primary-green;
+  color: $white-text;
+  z-index: 1000;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.nav-menu {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+mat-icon {
+  font-size: 2rem;
+  cursor: pointer;
+  color: $secondary-green;
+  height: 1.8rem;
+  width: 2rem;
+}
+
+.menu-button {
+  display: none;
+  align-items: center;
+}
+
+.logo {
+  height: 3rem;
+}
+
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") 
+}
+
+.navbar-toggler {
+  border: 1px solid $white-text;
+  transition: 0.3s ease;
+}
+
+.navbar-toggler:focus {
+  border: 2px solid $white-text;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: end;
+  padding-right: 4rem;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: $white-text;
+  font-size: 1.2rem;
+  border-bottom: solid transparent 0.2rem;
+}
+
+.nav-links li a:hover {
+  opacity: 0.8;
+  border-bottom: solid $white-text 0.2rem;
+}
+
+.login-button {
+  border-radius: 0.5rem;
+}
+
+
+/* Sección de bienvenida */
+.welcome-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+
+.welcome-text {
+  position: relative;
+  z-index: 1;
+  padding: 3.5rem;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-text h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  color: $secondary-purple;
+}
+
+.welcome-text h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: $text-color;
+}
+
+.primary-button {
+  background-color: $primary-purple !important;
+  color: $white-text !important;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+
+.welcome-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; // Ensure image is behind the text
+  background: url('https://i.postimg.cc/Z5xn9Fnr/cat-background.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* Secciones sobre PetPalz */
+.download-section,
+.why-section,
+.about-section {
+  display: flex;
+  align-items: center;
+  padding: 5rem;
+  gap: 4rem;
+}
+
+.features-section {
+  display: flex;
+  padding: 5rem;
+  gap: 4rem;
+  flex-direction: row;
+}
+
+.health-div,
+.first-aid-div,
+.reminders-div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.health-text,
+.first-aid-text,
+.reminders-text {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.why-image img,
+.about-image img {
+  max-width: 100%;
+  border-radius: 2rem;
+}
+
+.illustrations {
+  max-height: 300px;
+  padding-bottom: 2rem;
+}
+
+.download-images {
+  display: flex;
+  flex-direction: row;
+  padding: 5rem;
+}
+
+.download-images img {
+  max-height: 500px;
+}
+
+.download-text,
+.health-text,
+.first-aid-text,
+.reminders-text,
+.why-text,
+.about-text {
+  padding: 3rem;
+}
+
+.download-text h3,
+.health-text h3,
+.first-aid-text h3,
+.reminders-text h3,
+.why-text h3,
+.about-text h3 {
+  color: $secondary-green;
+  font-size: 2.5rem;
+}
+
+.download-text h4,
+.health-text h4,
+.first-aid-text h4,
+.reminders-text h4,
+.why-text h4 {
+  color: $secondary-purple;
+  font-size: 1.8rem;
+}
+
+.download-text p,
+.health-text p,
+.first-aid-text p,
+.reminders-text p,
+.why-text p,
+.about-text p {
+  color: $text-color;
+  line-height: 1.5;
+}
+
+.footer-section {
+  color: $white-text;
+  background-color: $primary-green;
+}
+
+.left-footer {
+  flex-direction: column;
+}
+
+.footer-section .logo {
+  width: auto;
+  max-width: 160px;
+}
+
+mat-icon {
+  color: $white-text;
+}
+
+.phone-div {
+  display: flex;
+  flex-direction: row;
+  padding-top: 2rem;
+}
+
+.email-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.right-footer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.follow-text {
+  font-size: 1.5rem;
+}
+
+.bi {
+  height: 1.8rem;
+  padding-left: 1rem;
+}
+
+mat-icon:hover,
+.bi:hover {
+  cursor: pointer;
+  opacity: 80%;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+
+  .download-section,
+  .features-section,
+  .why-section,
+  .about-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .welcome-section {
+    justify-content: center;
+  }
+
+  .welcome-image img {
+    background-size: contain;
+  }
+
+  .welcome-text {
+    width: 60%;
+    height: 130%;
+  }
+
+  .welcome-text h2 {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+}

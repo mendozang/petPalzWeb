@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Dashboard</h1>
+    </header>
+    <div class="body-trimmed">
+      <section class="main-sections">
+        
+        <section class="health-monitoring">
+          <h2>Monitoreo de salud</h2>
+          <div class="health-container">
+            <div class="chart-container">
+              <h4>Temperatura</h4>
+              <canvas #healthTemp id="health-temp"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>Pulso</h4>
+              <canvas #healthRate id="health-rate"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>Respiración</h4>
+              <canvas #healthBreathing id="health-breathing"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>VFC</h4>
+              <canvas #healthVfc id="health-vfc"></canvas>
+              <h6>N/A</h6>
+            </div>
+          </div>
+          
+        </section>
+      
+        <section class="lower-sections">
+          <section class="reminders">
+            <h2>Recordatorios</h2>
+            <div class="reminders-container">
+              
+            </div>
+          </section>
+    
+          <section class="location">
+            <h2>Ubicación de la mascota</h2>
+            <div class="location-container">
+              <div #map id="map"></div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </div>  
+  </main>
+</body>
+
+</html>

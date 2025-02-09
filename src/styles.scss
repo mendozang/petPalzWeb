@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+$text-color: #1E1E1E;
+$primary-green: #008467;
+$secondary-green: #004D3A;
+$primary-purple: #746ABA;
+$secondary-purple: #53448D;
+$container-green: #AAD4C2;
+$container-purple: #CCC4FF;
+$page-color: #F5FBF6;
+$white-text: #FFFFFF;
+$star-color: #FFC107;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    
+    density: 0,
+  ));
+}/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Fredoka, sans-serif; }
+
+:root {
+  @include mat.button-overrides((
+    filled-container-color: $container-green,
+    filled-label-text-color: $secondary-green,
+    filled-label-text-font: 'Fredoka, sans-serif',
+    filled-label-text-weight: 500,
+    filled-hover-state-layer-opacity: 0.3,
+  ));
+
+  @include mat.fab-overrides((
+    small-container-color: $container-green,
+    small-container-elevation-shadow: 0,
+    small-hover-container-elevation-shadow: 0,
+    small-pressed-container-elevation-shadow: 0,
+    small-focus-container-elevation-shadow:0,
+    hover-state-layer-opacity: 0.3
+  ))
+}

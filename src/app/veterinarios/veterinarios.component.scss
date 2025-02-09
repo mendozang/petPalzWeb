@@ -1,0 +1,134 @@
+@import "../../styles.scss";
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $page-color;
+}
+
+body {
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.body-trimmed {
+    margin-left: 17rem;
+    transition: margin-left 0.5s ease;
+    padding: 1.5rem;
+}
+
+header {
+    background-color: $primary-green;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.5s ease;
+}
+
+header h1 {
+    margin-left: 17rem;
+    color: $white-text;
+    padding-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: margin-left 0.5s ease;
+}
+
+main.collapsed .body-trimmed {
+    margin-left: 5rem;
+}
+
+main.collapsed header h1 {
+    margin-left: 5rem;
+}
+
+.input-group>.form-control {
+    max-width: 600px;
+}
+
+.input-group>.form-control:focus {
+    transition: all 0.3 ease;
+}
+
+.input-group>.form-control:focus {
+    border-color: $primary-purple;
+    box-shadow: inset 0 0 0 1px transparent;
+}
+
+#search-addon:hover {
+    cursor: pointer;
+}
+
+#search-addon:hover mat-icon {
+    color: $primary-purple;
+}
+
+mat-icon {
+    color: $text-color;
+}
+
+.main-sections {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.map {
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: $white-text;
+    width: 700;
+}
+
+.vet {
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: $white-text;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row;
+}
+
+.star-icon {
+    color: $star-color;
+}
+
+.vet-icon {
+    color: $secondary-green;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.hours,
+.address {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.vet-details-btn {
+    max-width: 200px;
+    color: $white-text !important;
+    background-color: $primary-purple !important;
+    border-radius: 0.5rem;
+}
+
+div.input-group.input-group-lg {
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    color: $white-text;
+}

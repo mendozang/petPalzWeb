@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="register-container">
+    <div class="purple-shape"> </div>
+    <div class="register-card">
+      <div class="register-header">
+        <div class="header-text">
+          <h2>Bienvenido a <span class="brand-name">PetPalz</span></h2>
+          <h3>Inicia Sesión</h3>
+        </div>
+        <div>
+          <img src="https://i.postimg.cc/sgQspYTB/icono-color.png" class="icon-pet" alt="icono PetPalz">
+        </div>
+      </div>
+      <div class="register-content">
+        
+        <div class="input-group">
+          <mat-icon matSuffix>mail</mat-icon>
+          <input type="email" class="form-control" placeholder="Correo electrónico" name="email" />
+        </div>
+        <div class="input-group">
+          <mat-icon matSuffix>lock</mat-icon>
+          <input type="password" class="form-control"  placeholder="Contraseña" name="password" />
+        </div>
+          
+
+          <button mat-flat-button type="submit" class="login-button">INICIAR SESIÓN</button>
+        <p class="password-text">¿Olvidaste la contraseña?</p>
+
+        
+        <p class="account-text">o inicia sesión con:</p>
+        <div class="social-buttons">
+          <button class="facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+              <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+            </svg>
+            Continúa con Facebook</button>
+          <button class="google">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 326667 333333" shape-rendering="geometricPrecision"
+              text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" class="bi-google"
+              clip-rule="evenodd">
+              <path
+                d="M326667 170370c0-13704-1112-23704-3518-34074H166667v61851h91851c-1851 15371-11851 38519-34074 54074l-311 2071 49476 38329 3428 342c31481-29074 49630-71852 49630-122593m0 0z"
+                fill="#4285f4" />
+              <path
+                d="M166667 333333c44999 0 82776-14815 110370-40370l-52593-40742c-14074 9815-32963 16667-57777 16667-44074 0-81481-29073-94816-69258l-1954 166-51447 39815-673 1870c27407 54444 83704 91852 148890 91852z"
+                fill="#34a853" />
+              <path
+                d="M71851 199630c-3518-10370-5555-21482-5555-32963 0-11482 2036-22593 5370-32963l-93-2209-52091-40455-1704 811C6482 114444 1 139814 1 166666s6482 52221 17777 74814l54074-41851m0 0z"
+                fill="#fbbc04" />
+              <path
+                d="M166667 64444c31296 0 52406 13519 64444 24816l47037-45926C249260 16482 211666 1 166667 1 101481 1 45185 37408 17777 91852l53889 41853c13520-40185 50927-69260 95001-69260m0 0z"
+                fill="#ea4335" />
+            </svg>
+            Continúa con Google</button>
+          <button class="apple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-apple" viewBox="0 0 16 16">
+              <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+              <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+            </svg>
+            Continúa con Apple</button>
+        </div>
+        <div class="footer">
+          <p>
+            ¿Todavía no tienes una cuenta? <a routerLink="/register" class="register-link">Regístrate</a>
+          </p>
+          <p>
+            <a routerLink="/dashboard" class="guest-text">o ingresa como invitado</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+</body>
+
+</html>

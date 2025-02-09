@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="sidebar" [ngClass]="isLeftSidebarCollapsed() ? 'sidebar-collapsed': '' ">
+        <div class="logo-container">
+            <button class="menu" (click)="toggleCollapse()">
+                <mat-icon class="menu-icon" matSuffix>menu</mat-icon>
+            </button>
+            @if (!isLeftSidebarCollapsed()) {
+                <img class="logo" src="https://i.postimg.cc/HkqH3rN6/logo-full-color.png" alt="logo petpalz">
+            }
+        </div>
+        @if (!isLeftSidebarCollapsed()) {
+            <div class="user-container">
+                <img class="user-img" src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png" alt="imagen default">
+                <p class="user-text">Hola, <span>Usuario!</span></p>
+            </div>
+        }
+        <div class="sidenav-nav">
+            @for (item of items; track $index) {
+            <li class="sidebar-nav-item">
+                <a class="sidebar-nav-link" 
+                [routerLink]="item.routeLink" 
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}"
+                >
+                <mat-icon class="sidebar-link-icon" matSuffix>{{ item.icon }}</mat-icon>
+                @if (!isLeftSidebarCollapsed()) {
+                    <span class="sidebar-link-text">{{ item.label }}</span>
+                }
+            </a>
+            </li>
+            }
+        </div>
+    </div>
+</body>
+
+</html>

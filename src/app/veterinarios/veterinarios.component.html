@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Veterinarios cercanos</h1>
+    </header>
+    <div class="body-trimmed">
+      <div class="search-bar">
+        <div class="input-group input-group-lg">
+          <input type="text" class="form-control rounded" placeholder="Buscar" aria-label="Buscar"
+            aria-describedby="search-addon" />
+          <span class="input-group-text" id="search-addon"><mat-icon matSuffix>search</mat-icon></span>
+        </div>
+    </div>
+    <section class="main-sections">
+      <section class="vets-details">
+        <div class="vet">
+          <h4>Nombre veterinaria</h4>
+          <div class="rating">
+            <p class="pe-1">0.0</p>
+            <mat-icon matSuffix class="star-icon">star</mat-icon>
+            <mat-icon matSuffix class="star-icon">star</mat-icon>
+            <mat-icon matSuffix class="star-icon">star</mat-icon>
+            <mat-icon matSuffix class="star-icon">star</mat-icon>
+            <mat-icon matSuffix class="star-icon">star</mat-icon>
+          </div>
+          <div class="address">
+            <mat-icon matSuffix class="vet-icon">location_on</mat-icon>
+            <p>Colonia, calle, codigo postal...</p>
+          </div>
+          <div class="hours">
+            <mat-icon matSuffix class="vet-icon">schedule</mat-icon>
+            <p>Horario: 00:00 - 00:00</p>
+          </div>
+          <button mat-flat-button class="vet-details-btn"><a routerLink="veterinarios-detalles">Ver más</a></button>
+        </div>
+      </section>
+      <section class="vets-map">
+        <div class="map"></div>
+      </section>
+    </section>
+  </div>
+  </main>
+</body>
+</html>

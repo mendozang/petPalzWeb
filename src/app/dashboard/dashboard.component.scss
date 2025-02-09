@@ -1,0 +1,107 @@
+@import "../../styles.scss";
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $page-color;
+}
+
+body {
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.body-trimmed {
+    margin-left: 17rem;
+    padding: 1.5rem;
+    transition: margin-left 0.5s ease;
+}
+
+header {
+    background-color: $primary-green;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.5s ease;
+}
+
+header h1 {
+    margin-left: 17rem;
+    color: $white-text;
+    padding-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: margin-left 0.5s ease;
+}
+
+main.collapsed .body-trimmed {
+    margin-left: 5rem;
+}
+
+main.collapsed header h1 {
+    margin-left: 5rem;
+}
+
+.main-sections {
+  display:flex;
+  flex-direction: column;
+}
+
+.lower-sections {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 3em;
+}
+
+.health-monitoring {
+    margin-bottom: 3rem;
+  }
+
+  
+  .reminders {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .location-container,
+  .health-container,
+  .reminders-container {
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem 1rem 2rem;
+    background-color: $white-text;
+  }
+
+  .health-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #health-vfc,
+  #health-breathing,
+  #health-rate,
+  #health-temp {
+    height: 5rem;
+  }
+
+  #map {
+    height: 300px;
+    border-radius: 1rem;
+  }
+
+
+  
+  
