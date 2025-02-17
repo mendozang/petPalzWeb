@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { AgregarMascotaComponent } from '../agregar-mascota/agregar-mascota.component';
 
 @Component({
   selector: 'app-mascota',
@@ -12,7 +13,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     MatIconModule,
     MatButtonModule,
-    RouterModule
+    RouterModule,
+    AgregarMascotaComponent
   ],
   templateUrl: './mascota.component.html',
   styleUrl: './mascota.component.scss'
@@ -48,5 +50,15 @@ export class MascotaComponent implements OnInit {
     if (typeof window !== 'undefined') {
       this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
     }
+  }
+
+  isModalVisible = false;
+
+  showModal() {
+	this.isModalVisible = true;
+  }
+
+  hideModal() {
+	this.isModalVisible = false;
   }
 }

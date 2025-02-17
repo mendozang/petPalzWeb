@@ -54,14 +54,29 @@
           <section class="reminders">
             <h2>Recordatorios</h2>
             <div class="reminders-container">
-              
+              <div class="calendar-container">
+                <div class="month-bar">
+                  <button (click)="prevMonth()">&#8249;</button>
+                  <span>{{ currentMonth | titlecase }}</span> <!-- Mostrar el mes en español -->
+                  <button (click)="nextMonth()">&#8250;</button>
+                </div>
+                <div class="days-container" #daysContainer>
+                  <div class="day" *ngFor="let day of daysInMonth" [class.current]="isCurrentDay(day)">
+                    <div>{{ day | date: 'd' }}</div>
+                    <div class="day-name">{{ getDayName(day) }}</div>
+                  </div>
+                </div>
+              </div>
+              <button mat-flat-button>Añadir recordatorio
+                <mat-icon>add</mat-icon>
+              </button>
             </div>
           </section>
     
           <section class="location">
             <h2>Ubicación de la mascota</h2>
             <div class="location-container">
-              <div #map id="map"></div>
+              <div *ngIf="isBrowser" #map id="map"></div>
             </div>
           </section>
         </section>

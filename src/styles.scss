@@ -12,6 +12,7 @@ $white-text: #FFFFFF;
 $star-color: #FFC107;
 
 html {
+  @include mat.core();
   @include mat.theme((
     color: (
       theme-type: light,
@@ -23,8 +24,8 @@ html {
   ));
 }/* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Fredoka, sans-serif; }
+html, body { height: 100%; };
+body { margin: 0; font-family: Fredoka, sans-serif; };
 
 :root {
   @include mat.button-overrides((
@@ -42,5 +43,31 @@ body { margin: 0; font-family: Fredoka, sans-serif; }
     small-pressed-container-elevation-shadow: 0,
     small-focus-container-elevation-shadow:0,
     hover-state-layer-opacity: 0.3
+  ));
+
+  @include mat.form-field-overrides((
+    outlined-input-text-color: $text-color,
+    outlined-focus-outline-color: $primary-purple,
+    outlined-outline-color: $primary-green,
+    outlined-hover-outline-color: $primary-purple,
+    outlined-outline-width: 1.8px,
+    outlined-focus-outline-width: 2px,
+    outlined-focus-label-text-color: $primary-purple,
+  ));
+
+  @include mat.select-overrides((
+    focused-arrow-color: $primary-purple,
+  ));
+
+  @include mat.datepicker-overrides((
+    calendar-date-selected-state-background-color: $primary-purple,
+  ));
+
+  @include mat.tabs-overrides((
+    active-indicator-color: $primary-purple,
+    active-hover-indicator-color: $primary-purple,
+    active-focus-indicator-color: $primary-purple,
+    label-text-size: 1.2rem,
   ))
-}
+
+};

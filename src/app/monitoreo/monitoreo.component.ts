@@ -1,15 +1,18 @@
-import { Component, signal, HostListener, OnInit } from '@angular/core';
+import { Component, signal, HostListener, OnInit} from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+import {MatTabsModule} from '@angular/material/tabs'; 
 
 @Component({
   selector: 'app-monitoreo',
   imports: [
     SidebarComponent,
-    CommonModule
+    CommonModule,
+    MatTabsModule,
   ],
   templateUrl: './monitoreo.component.html',
-  styleUrl: './monitoreo.component.scss'
+  styleUrl: './monitoreo.component.scss',
+  
 })
 export class MonitoreoComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
