@@ -2,50 +2,50 @@
 
 html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: $page-color;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $page-color;
 }
 
 body {
-    z-index: 0;
-    transition: all 0.5s ease;
+  z-index: 0;
+  transition: all 0.5s ease;
 }
 
 .body-trimmed {
-    margin-left: 17rem;
-    padding: 1.5rem;
-    transition: margin-left 0.5s ease;
+  margin-left: 17rem;
+  padding: 1.5rem;
+  transition: margin-left 0.5s ease;
 }
 
 header {
-    background-color: $primary-green;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    transition: margin-left 0.5s ease;
+  background-color: $primary-green;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  transition: margin-left 0.5s ease;
 }
 
 header h1 {
-    margin-left: 17rem;
-    color: $white-text;
-    padding-left: 1rem;
-    margin-top: 0;
-    margin-bottom: 0;
-    transition: margin-left 0.5s ease;
+  margin-left: 17rem;
+  color: $white-text;
+  padding-left: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: margin-left 0.5s ease;
 }
 
 main.collapsed .body-trimmed {
-    margin-left: 5rem;
+  margin-left: 5rem;
 }
 
 main.collapsed header h1 {
-    margin-left: 5rem;
+  margin-left: 5rem;
 }
 
 .main-sections {
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -56,93 +56,196 @@ main.collapsed header h1 {
 }
 
 .health-monitoring {
-    margin-bottom: 3rem;
-  }
+  margin-bottom: 3rem;
+}
 
-  
-  .reminders {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-  }
 
-  .location-container,
-  .health-container,
-  .reminders-container {
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 1rem 2rem 1rem 2rem;
-    background-color: $white-text;
-  }
+.reminders {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
 
-  .health-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+.reminders h2 {
+  text-align: start;
+}
 
-  #health-vfc,
-  #health-breathing,
-  #health-rate,
-  #health-temp {
-    height: 4rem;
-  }
+.location-container,
+.health-container,
+.reminders-container {
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem 1rem 2rem;
+  background-color: $white-text;
+}
 
-  #map {
-    height: 400px;
-    width: 400px;
-    border-radius: 1rem;
-  }
+.health-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .calendar-container {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-  }
-  
-  .days-container {
-    display: flex;
-    overflow-x: scroll;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    max-width: 450px;
-  }
-  
-  .days-container::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
-    
-  }
-  
-  .day {
-    flex: 0 0 auto;
-  width: 40px;
-  height: 60px; 
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#health-vfc,
+#health-breathing,
+#health-rate,
+#health-temp {
+  height: 4rem;
+}
+
+#map {
+  height: 400px;
+  width: 400px;
+  border-radius: 1rem;
+  z-index: 0;
+}
+
+.calendar-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.month-bar {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.days-container {
+  display: flex;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  max-width: 450px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.days-container::-webkit-scrollbar {
+  display: block;
+  height: 8px;
+}
+
+.days-container::-webkit-scrollbar-thumb {
+  background-color: $primary-purple;
+  border-radius: 10px;
+}
+
+.days-container::-webkit-scrollbar-track {
+  background-color: $container-purple;
+  border-radius: 10px;
+}
+
+.day {
+  flex: 0 0 auto;
+  width: 65px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 5px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  }
-  
-  .day.current {
-    background-color: #0ECBA1;
-    color: white;
-  }
+  border-radius: 1.5rem;
+  background-color: $container-purple;
+  color: $text-color;
+}
 
-  .day-name {
-    font-size: 12px;
-    color: gray;
-    text-transform: capitalize;
-  }
-  
-  
+.day.current {
+  background-color: $secondary-purple;
+  color: $white-text;
+}
+
+.day-name {
+  font-size: 1rem;
+  padding-bottom: 0.2rem;
+}
+
+.day-number {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.leaflet-control-zoom leaflet-bar leaflet-control,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  z-index: 1;
+}
+
+.add-reminder {
+  margin-top: 1rem;
+}
+
+.arrow {
+  font-size: 2rem;
+  font-weight: 600;
+  height: 2rem;
+  width: 2rem;
+  padding-left: 0.5rem;
+}
+
+.month-title {
+  font-size: 2rem;
+  font-weight: 500;
+  color: $secondary-green;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.individual-reminder {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid $secondary-purple;
+}
+
+.reminder-time {
+  display: flex;
+  flex-direction: row;
+}
+
+.pet-image img{
+  border-radius: 50%;
+  height: 4rem;
+  width: 4rem;
+  margin-left: 0.5rem;
+}
+
+.reminder-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+}
+
+.reminder-info p {
+  margin-bottom: 0;
+}
+
+.edit-button {
+  background-color: $container-purple !important;
+  border-radius: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+.edit-icon {
+  color: $secondary-purple;
+  height: 1.5rem;
+  width: 1.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.2rem;
+}

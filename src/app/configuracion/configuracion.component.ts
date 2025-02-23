@@ -2,7 +2,8 @@ import { Component, signal, HostListener, OnInit } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-configuracion',
@@ -13,10 +14,12 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   templateUrl: './configuracion.component.html',
-  styleUrl: './configuracion.component.scss'
+  styleUrls: ['./configuracion.component.scss']
 })
 export class ConfiguracionComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
+  userName: string | null = null;
+  userEmail: string | null = null;
 
   changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
     this.isLeftSidebarCollapsed.set(isLeftSidebarCollapsed);
@@ -24,7 +27,7 @@ export class ConfiguracionComponent implements OnInit {
 
   screenWidth = signal<number>(0);
 
-  constructor() {
+  constructor(private authService: AuthService, private router: Router) {
     if (typeof window !== 'undefined') {
       this.screenWidth.set(window.innerWidth);
     }
@@ -46,5 +49,21 @@ export class ConfiguracionComponent implements OnInit {
     if (typeof window !== 'undefined') {
       this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
     }
+
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.userName = user.nombre;
+        this.userEmail = user.email;
+      }
+    });
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  async logout(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

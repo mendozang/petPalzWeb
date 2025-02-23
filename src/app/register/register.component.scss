@@ -39,7 +39,6 @@
   display: flex;
   justify-content: space-between;
   text-align: start;
-  padding-bottom: 1rem;
 }
 
 .header-text h2 {
@@ -62,6 +61,18 @@
   align-items: center;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.error {
+  align-self: start;
+  color: #ba1a1a;
+  font-size: 0.9rem;
+}
 
 .input-group input {
   display: block;
@@ -88,9 +99,11 @@ input.form-control:focus {
   flex-wrap: nowrap;
   background-color: $white-text;
   border: solid;
+  margin-top: 1rem;
   border-width: 1.8px;
   border-color: $primary-green;
   border-radius: 0.5rem;
+  gap: 1rem;
   width: 100%;
   transition: all 0.3s ease;
 }
@@ -103,6 +116,7 @@ input.form-control:focus {
 }
 
 .register-button {
+  margin-top: 1rem;
   display: block;
   border-radius: 0.5rem;
   width: 300px;

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-
 <body>
   <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
     <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
@@ -24,17 +22,22 @@
           </div>
           <div class="profile-resume">
             <div class="resume-titles">
-              <h3>Usuario</h3>
-              <h6><a routerLink="/login">Iniciar Sesión</a></h6>
+              <h3>Perfil</h3>
+              <h6>
+                <a *ngIf="!isLoggedIn(); else loggedIn" routerLink="/login">Iniciar Sesión</a>
+                <ng-template #loggedIn>
+                  <a (click)="logout()">Cerrar sesión</a>
+                </ng-template>
+              </h6>
             </div>
             <div class="resume-content">
               <div class="content-one">
-                <mat-icon matSuffix class="icon-top">mail</mat-icon>
-                <p>Correo electronico</p>
+                <mat-icon matSuffix class="icon-top">badge</mat-icon>
+                <p>{{ userName || 'Nombre' }}</p>
               </div>
               <div class="content-one">
-                <mat-icon matSuffix class="icon-top">phone</mat-icon>
-                <p>Teléfono</p>
+                <mat-icon matSuffix class="icon-top">mail</mat-icon>
+                <p>{{ userEmail || 'Correo electronico' }}</p>
               </div>
             </div>
           </div>
@@ -43,7 +46,7 @@
           <div class="config-one">
             <div class="config-one-title">
               <mat-icon matSuffix class="icon">account_circle</mat-icon>
-              <p>Sobre mi</p>
+              <p>Editar perfil</p>
             </div>
             <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
           </div>
@@ -80,5 +83,4 @@
     </div>
   </main>
 </body>
-
 </html>

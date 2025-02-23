@@ -10,6 +10,7 @@ $container-purple: #CCC4FF;
 $page-color: #F5FBF6;
 $white-text: #FFFFFF;
 $star-color: #FFC107;
+$error-color: #ba1a1a;
 
 html {
   @include mat.core();

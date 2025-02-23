@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
-
-  <body>
-    <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
-      <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
-        (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
-      <header>
-        <h1>Mascota</h1>
-      </header>
-      <div class="body-trimmed">
-        <section class="main-sections">
-          <section class="added-pets">
-            <div class="added-pets-top">
-              <h2>Mascotas añadidas</h2>
-              <button mat-flat-button class="mat-button" (click)="showModal()">Añadir mascota
-                <mat-icon>add</mat-icon>
-              </button>
-              <app-agregar-mascota *ngIf="isModalVisible" (close)="hideModal()"></app-agregar-mascota>
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Mascota</h1>
+    </header>
+    <div class="body-trimmed">
+      <section class="main-sections">
+        <section class="added-pets">
+          <div class="added-pets-top">
+            <h2>Mascotas añadidas</h2>
+            <button mat-flat-button class="mat-button" (click)="showMascotaModal()">Añadir mascota
+              <mat-icon>add</mat-icon>
+            </button>
+            
+            <app-agregar-mascota *ngIf="isMascotaModalVisible" (close)="hideMascotaModal()"></app-agregar-mascota>
+          </div>
+          <div class="added-pets-body">
+            <div *ngIf="pets.length === 0" class="no-pets-message">
+              Todavía no tienes ninguna mascota añadida.
             </div>
-            <div class="added-pets-body">
-              <div class="pet">
-                <img src="/assets/default-pet.png" alt="imagen perro default">
-                <div class="pet-details">
-                  <div class="pet-header">
-                    <h4>Nombre</h4>
-                    <mat-icon class="vert-icon">more_vert</mat-icon>
-                  </div>
-                  <h6>Raza</h6>
-                  <button mat-flat-button class="pet-more-btn"><a routerLink="mascota-detalles">Ver más</a></button>
+            <div class="pet" *ngFor="let pet of pets">
+              <img [src]="pet.imagenUrl || '/assets/default-pet.png'" alt="imagen de {{ pet.nombre }}">
+              <div class="pet-details">
+                <div class="pet-header">
+                  <h4>{{ pet.nombre }}</h4>
+                  <mat-icon class="vert-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                      <mat-icon>edit</mat-icon>
+                      Editar</button>
+                    <button mat-menu-item (click)="deletePet(pet.id)">
+                      <mat-icon>delete</mat-icon>
+                      Eliminar</button>
+                  </mat-menu>
                 </div>
+                <h6>{{ pet.raza }}</h6>
+                <button mat-flat-button class="pet-more-btn"><a routerLink="mascota-detalles">Ver más</a></button>
               </div>
             </div>
-          </section>
-          <section class="calendar">
-            <div class="calendar-top">
-              <h2>Calendario</h2>
-              <button mat-flat-button class="mat-button">Añadir recordatorio
-                <mat-icon matSuffix>add</mat-icon>
-              </button>
-            </div>
-            <div class="calendar-body"></div>
-          </section>
+            <button mat-icon-button class="reload-btn" (click)="reloadPets()">
+              <mat-icon class="reload-icon">refresh</mat-icon>
+            </button>
+          </div>
         </section>
-      </div>
-    </main>
-  </body>
+        <section class="calendar">
+          <div class="calendar-top">
+            <h2>Calendario</h2>
+            <button mat-flat-button class="mat-button" (click)="showRecordatorioModal()">Añadir recordatorio
+              <mat-icon matSuffix>add</mat-icon>
+            </button>
+            <app-agregar-recordatorio *ngIf="isRecordatorioModalVisible" (close)="hideRecordatorioModal()"></app-agregar-recordatorio>
+          </div>
+          <div class="calendar-body"></div>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
 </html>

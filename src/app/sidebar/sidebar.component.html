@@ -20,7 +20,7 @@
         @if (!isLeftSidebarCollapsed()) {
             <div class="user-container">
                 <img class="user-image" src="/assets/default-avatar.jpg" alt="default avatar">
-                <p class="user-text">Hola, <span>Usuario!</span></p>
+                <p class="user-text">Hola, <span class="user-name">{{ currentUser?.nombre.split(' ')[0] || 'Usuario' }}!</span></p>
             </div>
         }
         <div class="sidenav-nav">

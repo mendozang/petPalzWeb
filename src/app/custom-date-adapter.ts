@@ -17,12 +17,16 @@ export class CustomDateAdapter extends NativeDateAdapter {
 
   override format(date: Date, displayFormat: Object): string {
     if (displayFormat === 'input') {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
+      const day = this._to2digit(date.getDate());
+      const month = this._to2digit(date.getMonth() + 1);
       const year = date.getFullYear();
-      return `${this._to2digit(day)}/${this._to2digit(month)}/${year}`;
+      return `${day}/${month}/${year}`;
     } else if (displayFormat === 'MMMM') {
       return this.getMonthNames('long')[date.getMonth()];
+    } else if (displayFormat === 'timeInput') { // Correctly format time
+      const hours = this._to2digit(date.getHours());
+      const minutes = this._to2digit(date.getMinutes());
+      return `${hours}:${minutes}`;
     }
     return super.format(date, displayFormat);
   }
@@ -35,11 +39,14 @@ export class CustomDateAdapter extends NativeDateAdapter {
 export const CUSTOM_DATE_FORMATS: MatDateFormats = {
   parse: {
     dateInput: 'DD/MM/YYYY',
+    timeInput: 'HH:mm', 
   },
   display: {
     dateInput: 'DD/MM/YYYY',
+    timeInput: 'HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
+    timeOptionLabel: 'HH:mm',
   },
 };

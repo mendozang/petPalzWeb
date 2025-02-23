@@ -78,6 +78,7 @@ main.collapsed header h1 {
 .resume-titles a {
     color: $secondary-green;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .resume-titles a:hover {

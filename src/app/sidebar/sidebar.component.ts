@@ -1,8 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, OnInit } from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,14 +11,15 @@ import { CommonModule } from '@angular/common';
     MatSidenavModule,
     MatIconModule,
     RouterModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
+  currentUser: any;
 
   items = [
     {
@@ -26,14 +28,9 @@ export class SidebarComponent {
       label: 'Inicio'
     },
     {
-      routeLink: '/guias',
-      icon: 'local_hospital',
-      label: 'Guías'
-    },
-    {
-      routeLink: '/monitoreo',
-      icon: 'bar_chart',
-      label: 'Monitoreo'
+      routeLink: '/mascota',
+      icon: 'pets',
+      label: 'Mascota'
     },
     {
       routeLink: '/veterinarios',
@@ -41,9 +38,9 @@ export class SidebarComponent {
       label: 'Veterinarios'
     },
     {
-      routeLink: '/mascota',
-      icon: 'pets',
-      label: 'Mascota'
+      routeLink: '/guias',
+      icon: 'local_hospital',
+      label: 'Guías'
     },
     {
       routeLink: '/configuracion',
@@ -51,6 +48,14 @@ export class SidebarComponent {
       label: "Configuración"
     }
   ];
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
 
   toggleCollapse(): void {
     this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed())

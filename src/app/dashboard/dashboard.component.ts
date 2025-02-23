@@ -8,10 +8,19 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../custom-date-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AgregarRecordatorioComponent } from '../agregar-recordatorio/agregar-recordatorio.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule, SidebarComponent, CommonModule, MatButtonModule, MatIconModule],
+  imports: [
+    RouterModule, 
+    SidebarComponent, 
+    CommonModule, 
+    MatButtonModule, 
+    MatIconModule,
+    AgregarRecordatorioComponent,
+    RouterModule
+  ],
   providers: [
       { provide: DateAdapter, useClass: CustomDateAdapter },
       { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
@@ -270,5 +279,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return day.getDate() === today.getDate() &&
            day.getMonth() === today.getMonth() &&
            day.getFullYear() === today.getFullYear();
+  }
+
+  isRecordatorioModalVisible = false;
+
+  showRecordatorioModal() {
+    this.isRecordatorioModalVisible = true;
+  }
+
+  hideRecordatorioModal() {
+    this.isRecordatorioModalVisible = false;
   }
 }

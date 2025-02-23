@@ -5,11 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""/>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <title>Document</title>
 </head>
 
@@ -22,7 +20,7 @@
     </header>
     <div class="body-trimmed">
       <section class="main-sections">
-        
+
         <section class="health-monitoring">
           <h2>Monitoreo de salud</h2>
           <div class="health-container">
@@ -47,32 +45,58 @@
               <h6>N/A</h6>
             </div>
           </div>
-          
+
         </section>
-      
+
         <section class="lower-sections">
           <section class="reminders">
             <h2>Recordatorios</h2>
             <div class="reminders-container">
               <div class="calendar-container">
                 <div class="month-bar">
-                  <button (click)="prevMonth()">&#8249;</button>
-                  <span>{{ currentMonth | titlecase }}</span> <!-- Mostrar el mes en español -->
-                  <button (click)="nextMonth()">&#8250;</button>
+                  <button mat-flat-button (click)="prevMonth()">
+                    <mat-icon class="arrow">keyboard_arrow_left</mat-icon>
+                  </button>
+                  <span class="month-title">{{ currentMonth | titlecase }}</span> <!-- Mostrar el mes en español -->
+                  <button mat-flat-button (click)="nextMonth()">
+                    <mat-icon class="arrow">keyboard_arrow_right</mat-icon>
+                  </button>
                 </div>
                 <div class="days-container" #daysContainer>
                   <div class="day" *ngFor="let day of daysInMonth" [class.current]="isCurrentDay(day)">
-                    <div>{{ day | date: 'd' }}</div>
+                    <div class="day-number">{{ day | date: 'd' }}</div>
                     <div class="day-name">{{ getDayName(day) }}</div>
                   </div>
                 </div>
               </div>
-              <button mat-flat-button>Añadir recordatorio
+              <div class="all-reminders">
+                <div class="individual-reminder">
+                  <div class="pet-image">
+                    <img src="assets/default-pet.png" alt="default-pet">
+                  </div>
+                  <div class="reminder-info">
+                    <div class="reminder-time">
+                      <mat-icon>-</mat-icon>
+                      <h4>Tiempo</h4>
+                    </div>
+                    <p>Recordatorio nombre</p>
+                    <p>Recordatorio descripción</p>
+                  </div>
+                  <div>
+                    <button class="edit-button" mat-icon-button>
+                      <mat-icon class="edit-icon">edit</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button class="add-reminder" mat-flat-button (click)="showRecordatorioModal()">Añadir recordatorio
                 <mat-icon>add</mat-icon>
               </button>
+              <app-agregar-recordatorio *ngIf="isRecordatorioModalVisible"
+                (close)="hideRecordatorioModal()"></app-agregar-recordatorio>
             </div>
           </section>
-    
+
           <section class="location">
             <h2>Ubicación de la mascota</h2>
             <div class="location-container">
@@ -81,7 +105,7 @@
           </section>
         </section>
       </section>
-    </div>  
+    </div>
   </main>
 </body>
 

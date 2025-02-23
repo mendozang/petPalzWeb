@@ -1,0 +1,26 @@
+@import "../../../styles.scss";
+
+.dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+h4 {
+    color: $secondary-green;
+}
+
+button {
+    background-color: $primary-purple;
+    color: $white-text;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}

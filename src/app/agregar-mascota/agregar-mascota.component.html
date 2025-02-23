@@ -23,9 +23,7 @@
     <div class="main-body">
       <div class="left-body">
         <div class="image-container">
-          <img class="pet-image"
-            src="/assets/default-pet.png"
-            alt="imagen perro default">
+          <img class="pet-image" [src]="imageUrl" alt="imagen perro default">
         </div>
         <input type="file" class="form-control image-upload" name="petimage" (change)="onFileSelected($event)"
           #fileInput hidden />
@@ -34,7 +32,7 @@
         <div *ngIf="selectedFileName">{{ selectedFileName }}</div>
       </div>
       <div class="right-body">
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <mat-form-field appearance="outline">
               <input matInput type="text" placeholder="Nombre" formControlName="petname" />

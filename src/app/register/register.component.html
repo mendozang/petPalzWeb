@@ -21,28 +21,43 @@
         </div>
       </div>
       <div class="register-content">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <mat-icon matSuffix>person</mat-icon>
+            <input type="text" class="form-control" placeholder="Nombre" formControlName="nombre" />
+          </div>
+          <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="error">
+            <div *ngIf="nombre?.errors?.['required']">El nombre es requerido.</div>
+            <div *ngIf="nombre?.errors?.['minlength']">El nombre debe tener al menos 3 letras.</div>
+          </div>
 
+          <div class="input-group">
+            <mat-icon matSuffix>mail</mat-icon>
+            <input type="email" class="form-control" placeholder="Correo electrónico" formControlName="email" />
+          </div>
+          <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
+            <div *ngIf="email?.errors?.['required']">El correo electrónico es requerido.</div>
+            <div *ngIf="email?.errors?.['email']">El correo electrónico no es válido.</div>
+          </div>
 
-        <div class="input-group">
-          <mat-icon matSuffix>person</mat-icon>
-          <input type="text" class="form-control" placeholder="Nombre" name="name" />
-        </div>
-        <div class="input-group">
-          <mat-icon matSuffix>mail</mat-icon>
-          <input type="email" class="form-control" placeholder="Correo electrónico" name="email" />
-        </div>
-        <div class="input-group">
-          <mat-icon matSuffix>lock</mat-icon>
-          <input type="password" class="form-control" placeholder="Contraseña" name="password" />
-        </div>
-        <div class="input-group">
-          <mat-icon matSuffix>lock</mat-icon>
-          <input type="password" class="form-control" placeholder="Confirmar contraseña" name="password" />
-        </div>
+          <div class="input-group">
+            <mat-icon matSuffix>lock</mat-icon>
+            <input type="password" class="form-control" placeholder="Contraseña" formControlName="contrasena" />
+          </div>
+          <div *ngIf="contrasena?.invalid && (contrasena?.dirty || contrasena?.touched)" class="error">
+            <div *ngIf="contrasena?.errors?.['required']">La contraseña es requerida.</div>
+            <div *ngIf="contrasena?.errors?.['minlength']">La contraseña debe tener al menos 6 digitos</div>
+          </div>
 
-
-        <button mat-flat-button type="submit" class="register-button">CREAR CUENTA</button>
-
+          <div class="input-group">
+            <mat-icon matSuffix>lock</mat-icon>
+            <input type="password" class="form-control" placeholder="Confirmar contraseña" formControlName="confirmarContrasena" />
+          </div>
+          <div *ngIf="registerForm.errors?.['passwordsMismatch'] && (confirmarContrasena?.dirty || confirmarContrasena?.touched)" class="error">
+            <div>Las contraseñas no coinciden.</div>
+          </div>
+          <button mat-flat-button type="submit" class="register-button" [disabled]="registerForm.invalid">CREAR CUENTA</button>
+        </form>
         <p class="account-text">o crea una cuenta con:</p>
         <div class="social-buttons">
           <button class="facebook">

@@ -12,7 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, startWith, map } from 'rxjs';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-agregar-mascota',
@@ -40,12 +41,15 @@ import {MatSelectModule} from '@angular/material/select';
 export class AgregarMascotaComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   selectedFileName: string | null = null;
+  selectedFile: File | null = null;
+  imageUrl: string | ArrayBuffer | null = '/assets/default-pet.png';
   form: FormGroup;
   breeds: { [key: string]: string[] } = {};
   breedOptions: string[] = [];
   filteredBreedOptions: Observable<string[]> = new Observable<string[]>();
+  currentUser: any;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private authService: AuthService) {
     this.form = this.fb.group({
       petname: [''],
       species: [''],
@@ -58,6 +62,10 @@ export class AgregarMascotaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.http.get<{ [key: string]: string[] }>('/assets/breeds.json').subscribe((data: { [key: string]: string[] }) => {
       this.breeds = data;
     });
@@ -85,6 +93,37 @@ export class AgregarMascotaComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFileName = input.files[0].name;
+      this.selectedFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  onSubmit(): void {
+    if (this.form.valid && this.currentUser) {
+      const petData = {
+        nombre: this.form.get('petname')?.value,
+        fechaNacimiento: this.form.get('birthdate')?.value,
+        especie: this.form.get('species')?.value,
+        raza: this.form.get('breed')?.value,
+        peso: this.form.get('weight')?.value,
+        imagenUrl: this.imageUrl, // Use base64 string
+        usuarioId: this.currentUser.id
+      };
+
+      this.http.post('https://petpalzapi.onrender.com/api/Mascota', petData).subscribe(
+        response => {
+          console.log('Mascota añadida correctamente', response);
+          this.closeModal();
+        },
+        error => {
+          console.error('Error añadiendo mascota', error);
+        }
+      );
     }
   }
 }

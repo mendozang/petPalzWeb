@@ -65,10 +65,12 @@
   gap: 1rem;
 }
 
+
 .pet-image {
   height: 200px;
   width: 200px;
   border-radius: 1rem;
+  object-fit: cover; 
 }
 
 .custom-file-upload {
