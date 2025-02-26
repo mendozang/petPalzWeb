@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Configuración</h1>
+    </header>
+    <div class="body-trimmed">
+      <section class="main-sections">
+        <div class="profile">
+          <div class="profile-img">
+            <img class="user-img"
+              src="/assets/default-avatar.jpg"
+              alt="default avatar">
+          </div>
+          <div class="profile-resume">
+            <div class="resume-titles">
+              <h3>Perfil</h3>
+              <h6>
+                <a *ngIf="!isLoggedIn(); else loggedIn" routerLink="/login">Iniciar Sesión</a>
+                <ng-template #loggedIn>
+                  <a (click)="logout()">Cerrar sesión</a>
+                </ng-template>
+              </h6>
+            </div>
+            <div class="resume-content">
+              <div class="content-one">
+                <mat-icon matSuffix class="icon-top">badge</mat-icon>
+                <p>{{ userName || 'Nombre' }}</p>
+              </div>
+              <div class="content-one">
+                <mat-icon matSuffix class="icon-top">mail</mat-icon>
+                <p>{{ userEmail || 'Correo electronico' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-config">
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">account_circle</mat-icon>
+              <p>Editar perfil</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">settings</mat-icon>
+              <p>Configuración avanzada</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">location_on</mat-icon>
+              <p>Dirección</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">watch</mat-icon>
+              <p>Configuración de collar</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+          <div class="config-one">
+            <div class="config-one-title">
+              <mat-icon matSuffix class="icon">notifications</mat-icon>
+              <p>Notificaciones</p>
+            </div>
+            <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

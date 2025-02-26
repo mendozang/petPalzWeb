@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+    <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+      (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+    <header>
+      <h1>Dashboard - <span *ngIf="selectedPet">{{selectedPet.nombre}}</span></h1>
+      <button mat-icon-button class="pets-btn" [matMenuTriggerFor]="menu"><mat-icon class="pets-icon">pets</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let pet of pets" (click)="selectPet(pet)">
+          <span>{{ pet.nombre }}</span>
+        </button>
+      </mat-menu>
+    </header>
+    <div class="body-trimmed">
+      <section class="main-sections">
+
+        <section class="health-monitoring">
+          <h2>Monitoreo de salud</h2>
+          <div class="health-container">
+            <div class="chart-container">
+              <h4>Temperatura</h4>
+              <canvas #healthTemp id="health-temp"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>Pulso</h4>
+              <canvas #healthRate id="health-rate"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>Respiración</h4>
+              <canvas #healthBreathing id="health-breathing"></canvas>
+              <h6>N/A</h6>
+            </div>
+            <div class="chart-container">
+              <h4>VFC</h4>
+              <canvas #healthVfc id="health-vfc"></canvas>
+              <h6>N/A</h6>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lower-sections">
+          <section class="reminders">
+            <h2>Recordatorios</h2>
+            <div class="reminders-container">
+              <div class="calendar-container">
+                <div class="month-bar">
+                  <button mat-flat-button (click)="prevMonth()">
+                    <mat-icon class="arrow">keyboard_arrow_left</mat-icon>
+                  </button>
+                  <span class="month-title">{{ currentMonth | titlecase }}</span> <!-- Mostrar el mes en español -->
+                  <button mat-flat-button (click)="nextMonth()">
+                    <mat-icon class="arrow">keyboard_arrow_right</mat-icon>
+                  </button>
+                </div>
+                <div class="days-container" #daysContainer>
+                  <div class="day" *ngFor="let day of daysInMonth" [class.current]="isCurrentDay(day)">
+                    <div class="day-number">{{ day | date: 'd' }}</div>
+                    <div class="day-name">{{ getDayName(day) }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="all-reminders">
+                <div class="individual-reminder" *ngFor="let reminder of reminders">
+                  <div class="pet-image">
+                    <img [src]="reminder.pet.imagenUrl || 'assets/default-pet.png'" alt="imagen de {{ reminder.pet.nombre }}">
+                  </div>
+                  <div class="reminder-info">
+                    <div class="reminder-time">
+                      <mat-icon class="reminder-icon">{{ getReminderIcon(reminder.tipo) }}</mat-icon>
+                      <h4>{{ reminder.hora }}</h4>
+                    </div>
+                    <p>{{ reminder.nombre }}</p>
+                    <p>{{ reminder.descripcion }}</p>
+                  </div>
+                  <div>
+                    <button class="edit-button" mat-icon-button (click)="openEditReminderModal(reminder.id)">
+                      <mat-icon class="edit-icon">edit</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button class="add-reminder" mat-flat-button (click)="showRecordatorioModal()">Añadir recordatorio
+                <mat-icon>add</mat-icon>
+              </button>
+              <app-agregar-recordatorio *ngIf="isRecordatorioModalVisible"
+                (close)="hideRecordatorioModal()"></app-agregar-recordatorio>
+            </div>
+          </section>
+
+          <section class="location">
+            <h2>Ubicación de la mascota</h2>
+            <div class="location-container">
+              <div *ngIf="isBrowser" #map id="map"></div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

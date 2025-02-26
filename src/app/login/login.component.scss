@@ -1,0 +1,236 @@
+@import "../../styles.scss";
+
+/* Contenedor principal */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background-color: $page-color;
+  position: relative;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.error {
+  align-self: start;
+  color: #ba1a1a;
+  font-size: 0.9rem;
+}
+
+.purple-shape {
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 55%;
+  z-index: 0;
+  background-color: $primary-purple;
+  border-radius: 0 20% 20% 0;
+}
+
+.register-card {
+  position: relative;
+  background: $white-text;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
+  z-index: 1;
+}
+
+.register-header {
+  display: flex;
+  justify-content: space-between;
+  text-align: start;
+}
+
+.header-text h2 {
+  font-size: 1.5rem;
+}
+
+.icon-pet {
+  height: 4rem;
+}
+
+.brand-name {
+  color: $secondary-purple;
+}
+
+.register-content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.input-group input {
+  display: block;
+  width: 100%;
+  border-color: transparent;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: $white-text;
+  border: solid;
+  margin-top: 1rem;
+  border-width: 1.8px;
+  border-color: $primary-green;
+  border-radius: 0.5rem;
+  gap: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+  border-color: $primary-purple;
+  box-shadow: 0 0 2px 1px $primary-purple;
+}
+
+input.form-control:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.input-group mat-icon {
+  color: $secondary-purple;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  overflow: visible;
+}
+
+.login-button {
+  margin-top: 1rem;
+  display: block;
+  border-radius: 0.5rem;
+  width: 300px;
+}
+
+.password-text {
+  font-size: 1rem;
+  color: $secondary-green;
+  cursor: pointer;
+}
+
+.password-text:hover {
+  text-decoration: underline;
+}
+
+.account-text {
+  font-size: 1.2rem;
+  margin-bottom: 0rem;
+  margin-top: 0.4rem;
+  color: $secondary-purple;
+}
+
+
+
+.social-buttons button {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  margin: 0.8rem 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.social-buttons button:hover {
+  opacity: 0.8;
+  scale: 1.05;
+}
+
+.facebook {
+  background-color: #1877F2;
+  color: $white-text;
+  border: none;
+}
+
+.bi-facebook {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.google {
+  background-color: $white-text;
+  color: #757575;
+  border: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bi-google {
+  height: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.apple {
+  background-color: black;
+  color: $white-text;
+  border: none;
+}
+
+.bi-apple {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.footer {
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.register-link {
+  color: $secondary-green;
+  text-decoration: none;
+}
+
+.guest-text:hover,
+.register-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.guest-text {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: $secondary-green;
+  text-decoration: none;
+}
+
+
+
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .register-card {
+    padding: 1.3rem;
+  }
+
+  form input,
+  form button,
+  .social-buttons button {
+    font-size: 1rem;
+  }
+}

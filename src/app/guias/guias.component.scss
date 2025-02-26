@@ -1,0 +1,141 @@
+@import "../../styles.scss";
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $page-color;
+}
+
+body {
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.body-trimmed {
+    margin-left: 17rem;
+    transition: margin-left 0.5s ease;
+    padding: 1.5rem;
+}
+
+header {
+    background-color: $primary-green;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.5s ease;
+}
+
+header h1 {
+    margin-left: 17rem;
+    color: $white-text;
+    padding-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: margin-left 0.5s ease;
+}
+
+main.collapsed .body-trimmed {
+    margin-left: 5rem;
+}
+
+main.collapsed header h1 {
+    margin-left: 5rem;
+}
+
+#search-addon:hover {
+    cursor: pointer;
+}
+
+#search-addon:hover mat-icon {
+    color: $primary-purple;
+}
+
+mat-icon {
+    color: $text-color;
+}
+
+.arrow {
+    color: $secondary-green;
+    height: 2rem;
+    width: 2rem;
+    font-weight: 600;
+}
+
+.input-group>.form-control {
+    max-width: 600px;
+}
+
+.input-group>.form-control:focus {
+    transition: all 0.3 ease;
+}
+
+.input-group>.form-control:focus {
+    border-color: $primary-purple;
+    box-shadow: inset 0 0 0 1px transparent;
+}
+
+div.input-group.input-group-lg {
+    display: flex;
+    justify-content: center;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 2rem;
+    padding-top: 2rem;
+}
+
+.categories-top {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: $white-text;
+    max-height: 300px;
+    max-width: 300px;
+    align-items: center;
+}
+
+.category-row a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.categories-bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.category-row:hover {
+    cursor: pointer;
+    opacity: 85%;
+}
+
+.category img {
+    height: 140px;
+}
+
+.category h4 {
+    font-weight: 600;
+    align-self: flex-start;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: $text-color;
+}

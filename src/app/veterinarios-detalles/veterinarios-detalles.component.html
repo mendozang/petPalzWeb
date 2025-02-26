@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+        <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+            (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+
+            <header>
+                <h1>Veterinarios cercanos</h1>
+              </header>
+              <div class="body-trimmed">
+                
+              </div>
+    </main>
+</body>
+
+</html>

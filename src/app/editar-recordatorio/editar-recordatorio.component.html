@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=cancel" />
+  <title>Document</title>
+</head>
+
+<body class="modal-overlay" (click)="closeModal()">
+  <main class="modal-content" (click)="$event.stopPropagation()">
+    <header>
+      <div class="header-content">
+        <h3>Editar recordatorio</h3>
+        <span class="material-symbols-outlined icon-close" (click)="closeModal()">
+          cancel
+        </span>
+      </div>
+    </header>
+
+    <div class="main-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Mascota</mat-label>
+              <input matInput [value]="petName" disabled>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de recordatorio</mat-label>
+              <mat-select formControlName="type">
+                <mat-option *ngFor="let reminder of reminders" [value]="reminder.value">
+                  <mat-icon>{{ reminder.icon }}</mat-icon>{{ reminder.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Nombre" formControlName="name" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Descripción" formControlName="description" />
+            </mat-form-field>
+
+            <ng-container *ngIf="form.get('type')?.value === '1'; else normalDatePicker">
+              <mat-form-field appearance="outline">
+                <mat-label>Rango de fechas</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="startDate" placeholder="Fecha de inicio">
+                  <input matEndDate formControlName="endDate" placeholder="Fecha de fin">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </ng-container>
+            <ng-template #normalDatePicker>
+              <mat-form-field appearance="outline">
+                <input matInput [matDatepicker]="datePicker" type="text" class="form-control" placeholder="Fecha"
+                  formControlName="uniqueDate" />
+                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+              </mat-form-field>
+            </ng-template>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Hora</mat-label>
+              <input matInput type="time" formControlName="time" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Frecuencia</mat-label>
+              <mat-select formControlName="frecuency">
+                <mat-option *ngFor="let variable of variables" [value]="variable.value">
+                  {{ variable.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="footer">
+          <button mat-flat-button class="delete-btn">Eliminar</button>
+          <button mat-flat-button type="submit" class="update-btn">Actualizar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+
+</html>

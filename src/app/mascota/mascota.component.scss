@@ -1,0 +1,293 @@
+@import "../../styles.scss";
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $page-color;
+}
+
+body {
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.body-trimmed {
+    margin-left: 17rem;
+    transition: margin-left 0.5s ease;
+    padding: 1.5rem;
+}
+
+header {
+    background-color: $primary-green;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.5s ease;
+}
+
+header h1 {
+    margin-left: 17rem;
+    color: $white-text;
+    padding-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: margin-left 0.5s ease;
+}
+
+main.collapsed .body-trimmed {
+    margin-left: 5rem;
+}
+
+main.collapsed header h1 {
+    margin-left: 5rem;
+}
+
+.no-pets-message {
+    font-size: 1.2rem;
+    color: $secondary-purple;
+  }
+
+.calendar-top,
+.added-pets-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mat-button {
+    border-radius: 0.5rem;
+}
+
+.calendar-body,
+.added-pets-body {
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem 1rem 2rem;
+    background-color: $white-text;
+    margin-top: 1rem;
+}
+
+.calendar {
+    margin-top: 3rem;
+}
+
+mat-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    font-weight: 600;
+}
+
+.added-pets-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.reload-btn {
+    justify-self: end;
+}
+
+.reload-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pet {
+    display: flex;
+    flex-direction: row;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    background-color: $page-color;
+    width: fit-content;
+}
+
+.pet img {
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover; 
+    border-radius: 50%;
+}
+
+.pet-details {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+}
+
+.pet-details h6 {
+    color: $primary-purple;
+}
+
+.vert-icon {
+    font-size: 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    font-weight: 500;
+    margin-left: 2rem;
+    transition: all 0.3s ease;
+}
+
+.vert-icon:hover {
+    cursor: pointer;
+    color: $primary-purple;
+}
+
+.pet-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pet-more-btn {
+    color: $white-text !important;
+    background-color: $primary-purple !important;
+    border-radius: 0.5rem;
+    z-index: 0;
+}
+
+a {
+    text-decoration: none;
+    color: $white-text;
+}
+
+
+
+.individual-reminder {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid $secondary-purple;
+    margin-bottom: 1rem;
+  }
+
+  .reminders-list h3 {
+    padding-bottom: 1rem;
+  }
+
+  .reminder-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reminder-text p {
+    margin-bottom: 0;
+  }
+  
+  .reminder-time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .reminder-time h4 {
+    margin-bottom: 0;
+    line-height: 0;
+    margin-left: 0.5rem;
+  }
+
+  .reminder-icon {
+    color: $secondary-green;
+    padding-right: 1rem;
+  }
+  
+  .pet-image img{
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+    margin-left: 0.5rem;
+    object-fit: cover; 
+  }
+  
+  .reminder-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+  }
+  
+  .reminder-info p {
+    margin-bottom: 0;
+  }
+  
+  .edit-button {
+    background-color: $container-purple !important;
+    border-radius: 0.7rem;
+    margin-right: 0.5rem;
+  }
+  
+  .edit-icon {
+    color: $secondary-purple;
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+.only-calendar {
+    max-width: 600px;
+    width: 600px;
+  }
+
+  .calendar-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .reminders-list {
+    max-width: 400px;
+  }
+
+  ::ng-deep .mat-primary .mat-mdc-select-arrow {
+    color: $secondary-green;
+  }
+  
+  ::ng-deep .mat-mdc-form-field.mat-focused.mat-primary {
+    color: $primary-purple;
+  }
+  
+  ::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
+    color: $secondary-green;
+  }
+  
+  ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border-color: $primary-green !important;
+  }
+  
+  .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border-color: $primary-green !important;
+  }
+  
+  ::ng-deep .mat-calendar-body-selected.mat-calendar-body-today {
+    box-shadow: inset 0 0 0 1px $secondary-purple !important;
+  }
+
+  ::ng-deep .mat-mdc-button .mat-mdc-button-touch-target {
+    background-color: $primary-purple;
+    border-radius: 2rem;
+  }
+
+  ::ng-deep .mat-mdc-button:not(:disabled) {
+    color: $white-text !important;
+  }
+
+  ::ng-deep .mat-calendar-arrow {
+    fill: $white-text !important;
+  }
+
+  ::ng-deep .mat-calendar-table-header th  {
+    color: $secondary-purple !important;
+    font-size: 2rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem !important;
+  }

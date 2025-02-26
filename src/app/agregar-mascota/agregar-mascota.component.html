@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=cancel" />
+  <title>Document</title>
+</head>
+
+<body class="modal-overlay" (click)="closeModal()">
+  <main class="modal-content" (click)="$event.stopPropagation()">
+    <header>
+      <div class="header-content">
+        <h3>Añade a tu mascota</h3>
+        <span class="material-symbols-outlined icon-close" (click)="closeModal()">
+          cancel
+        </span>
+      </div>
+    </header>
+
+    <div class="main-body">
+      <div class="left-body">
+        <div class="image-container">
+          <img class="pet-image" [src]="imageUrl" alt="imagen perro default">
+        </div>
+        <input type="file" class="form-control image-upload" name="petimage" (change)="onFileSelected($event)"
+          #fileInput hidden />
+        <button mat-flat-button type="button" class="custom-file-upload" (click)="fileInput.click()">Subir
+          Imagen</button>
+        <div *ngIf="selectedFileName">{{ selectedFileName }}</div>
+      </div>
+      <div class="right-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Nombre" formControlName="petname" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Especie</mat-label>
+              <mat-select formControlName="species">
+                <mat-option value="Gato">Gato</mat-option>
+                <mat-option value="Perro">Perro</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <input type="text" matInput placeholder="Raza" formControlName="breed" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let breed of filteredBreedOptions | async" [value]="breed">
+                {{ breed }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="picker" type="text" class="form-control" placeholder="Fecha de nacimiento"
+              formControlName="birthdate" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Género</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="1">Femenino</mat-option>
+              <mat-option value="2">Masculino</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Color" formControlName="color" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <input matInput type="number" placeholder="Peso (Kg)" formControlName="weight" />
+            </mat-form-field>
+          </div>
+          <button mat-flat-button type="submit" class="add-button">Añadir</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

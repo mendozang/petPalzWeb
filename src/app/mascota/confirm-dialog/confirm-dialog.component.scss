@@ -1,0 +1,19 @@
+@import "../../../styles.scss";
+
+.dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+h4 {
+    color: $secondary-green;
+}
+
+.warn {
+    margin-left: 1rem;
+    background-color: $error-color !important;
+    color: $white-text !important;
+}
