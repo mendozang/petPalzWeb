@@ -201,10 +201,6 @@ main.collapsed header h1 {
   z-index: 1;
 }
 
-.add-reminder {
-  margin-top: 1rem;
-}
-
 .arrow {
   font-size: 2rem;
   font-weight: 600;
@@ -231,6 +227,7 @@ main.collapsed header h1 {
   border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 2px solid $secondary-purple;
+  margin-bottom: 1rem;
 }
 
 .reminder-time {
@@ -279,4 +276,36 @@ main.collapsed header h1 {
   width: 1.5rem;
   font-size: 1.5rem;
   margin-bottom: 0.2rem;
+}
+
+.last-location {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.title-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon-clock {
+  font-weight: 00;
+  font-size: 1.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  color: $secondary-green;
+}
+
+.title-location {
+  padding-left: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.time-date {
+  display: flex;
+  flex-direction: row;
 }

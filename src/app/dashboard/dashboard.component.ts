@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { EditarRecordatorioComponent } from '../editar-recordatorio/editar-recordatorio.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -27,9 +27,7 @@ import { MatDialog } from '@angular/material/dialog';
     AgregarRecordatorioComponent,
     RouterModule,
     MatMenuModule,
-    EditarRecordatorioComponent,
-    MatDialogModule,
-    MatDialog
+    MatDialogModule
   ],
   providers: [
       { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -49,6 +47,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   selectedPet: any = null;
   reminders: any[] = [];
   isRecordatorioModalVisible = false;
+  map: any;
+  lastLocation: any = null;
 
   @ViewChild('healthTemp') healthTemp!: ElementRef;
   @ViewChild('healthRate') healthRate!: ElementRef;
@@ -93,7 +93,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.isBrowser) {
       this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
     }
-    this.loadPets();
+    this.authService.currentUser$.subscribe(user => {
+      if (user && user.id) {
+        this.loadPets();
+      } else {
+        console.error('No current user or user ID found.');
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -109,7 +115,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   loadPets(): void {
     const currentUser = this.authService.getCurrentUser();
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
       this.http.get(`https://petpalzapi.onrender.com/api/Usuario/${currentUser.id}`).subscribe(
         (userData: any) => {
           this.pets = Array.isArray(userData.mascotas) 
@@ -118,12 +124,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           if (this.pets.length > 0) {
             this.selectedPet = this.pets[0]; // Select the first pet by default
             this.loadReminders(this.currentDate);
+            this.loadPetLocation(this.selectedPet.id);
           }
         },
         error => {
           console.error('Error fetching pets:', error);
         }
       );
+    } else {
+      console.error('No current user or user ID found.');
     }
   }
 
@@ -143,6 +152,33 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         );
     }
   }
+
+  loadPetLocation(mascotaId: number): void {
+    this.http.get(`https://petpalzapi.onrender.com/api/Monitoreo/mascota/${mascotaId}`).subscribe(
+      (response: any) => {
+        const locations = response.$values || [];
+        if (locations.length > 0) {
+          this.lastLocation = locations[0]; // Assuming the first entry is the latest
+          this.updateMap(this.lastLocation.latitud, this.lastLocation.longitud);
+        }
+      },
+      error => {
+        console.error('Error fetching pet location:', error);
+      }
+    );
+  }
+
+  async updateMap(lat: number, lng: number): Promise<void> {
+    if (this.map) {
+      this.map.setView([lat, lng], 13);
+  
+      const L = await import('leaflet'); // Dynamically import Leaflet
+      L.marker([lat, lng]).addTo(this.map)
+        .bindPopup('Ubicación actual de la mascota.')
+        .openPopup();
+    }
+  }
+  
 
   generateDailyReminders(date: Date): void {
     const dailyReminders: any[] = [];
@@ -170,29 +206,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   selectPet(pet: any): void {
     this.selectedPet = pet;
     this.loadReminders(this.currentDate);
+    this.loadPetLocation(pet.id);
   }
 
   openEditReminderModal(reminderId: number): void {
-    this.http.get(`https://petpalzapi.onrender.com/api/Recordatorio/${reminderId}`).subscribe(
-      (reminder: any) => {
-        const dialogRef = this.dialog.open(EditarRecordatorioComponent, {
-          data: { reminder }
-        });
-
-        dialogRef.afterClosed().subscribe((result: any) => {
-          if (result) {
-            this.loadReminders(this.currentDate); // Reload reminders after editing
-          }
-        });
+    const dialogRef = this.dialog.open(EditarRecordatorioComponent, {
+      data: { reminderId }
+    });
+  
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.loadReminders(this.currentDate); // Reload reminders after editing
+      }
+        
       },
       error => {
         console.error('Error fetching reminder:', error);
       }
     );
   }
-
-  // Other methods (initializeChart, initializeMap, updateCalendar, etc.) remain unchanged
-
 
   //health charts
   initializeChart(): void {
@@ -264,16 +296,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   async initializeMap(): Promise<void> {
     if (this.isBrowser) {
       const L = await import('leaflet'); // Dynamically import Leaflet
-  
-      const map = L.map(this.mapContainer.nativeElement).setView([51.505, -0.09], 13);
+      
+      this.map = L.map(this.mapContainer.nativeElement).setView([51.505, -0.09], 13);
   
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-  
-      L.marker([51.505, -0.09]).addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+      }).addTo(this.map);
     }
   }
 

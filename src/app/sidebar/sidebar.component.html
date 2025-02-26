@@ -8,36 +8,36 @@
 </head>
 
 <body>
-    <div class="sidebar" [ngClass]="isLeftSidebarCollapsed() ? 'sidebar-collapsed': '' ">
+    <div class="sidebar" [ngClass]="isLeftSidebarCollapsed ? 'sidebar-collapsed': '' ">
         <div class="logo-container">
             <button class="menu" (click)="toggleCollapse()">
                 <mat-icon class="menu-icon" matSuffix>menu</mat-icon>
             </button>
-            @if (!isLeftSidebarCollapsed()) {
+            <ng-container *ngIf="!isLeftSidebarCollapsed">
                 <img class="logo" src="/assets/logo-full-color.png" alt="logo petpalz">
-            }
+            </ng-container>
         </div>
-        @if (!isLeftSidebarCollapsed()) {
+        <ng-container *ngIf="!isLeftSidebarCollapsed">
             <div class="user-container">
-                <img class="user-image" src="/assets/default-avatar.jpg" alt="default avatar">
-                <p class="user-text">Hola, <span class="user-name">{{ currentUser?.nombre.split(' ')[0] || 'Usuario' }}!</span></p>
+                <img class="user-image" [src]="currentUser?.imagenUrl || '/assets/default-avatar.jpg'" alt="user avatar">
+                <p class="user-text">Hola, <span class="user-name">{{ currentUser?.nombre?.split(' ')[0] || 'Usuario' }}!</span></p>
             </div>
-        }
+        </ng-container>
         <div class="sidenav-nav">
-            @for (item of items; track $index) {
-            <li class="sidebar-nav-item">
-                <a class="sidebar-nav-link" 
-                [routerLink]="item.routeLink" 
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}"
-                >
-                <mat-icon class="sidebar-link-icon" matSuffix>{{ item.icon }}</mat-icon>
-                @if (!isLeftSidebarCollapsed()) {
-                    <span class="sidebar-link-text">{{ item.label }}</span>
-                }
-            </a>
-            </li>
-            }
+            <ng-container *ngFor="let item of items; trackBy: trackByFn">
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link" 
+                    [routerLink]="item.routeLink" 
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}"
+                    >
+                    <mat-icon class="sidebar-link-icon" matSuffix>{{ item.icon }}</mat-icon>
+                    <ng-container *ngIf="!isLeftSidebarCollapsed">
+                        <span class="sidebar-link-text">{{ item.label }}</span>
+                    </ng-container>
+                    </a>
+                </li>
+            </ng-container>
         </div>
     </div>
 </body>

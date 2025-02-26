@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -12,6 +12,10 @@ import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/materia
 import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { AuthService } from '../services/auth.service';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UpdateReminderDialogComponent } from './success-dialog/update-reminder-dialog.component';
+import { DeleteReminderDialogComponent } from './confirm-dialog/delete-reminder-dialog.component';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-editar-recordatorio',
@@ -24,7 +28,8 @@ import { AuthService } from '../services/auth.service';
     MatSelectModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatTimepickerModule
+    MatTimepickerModule,
+    MatDialogModule
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -67,7 +72,10 @@ export class EditarRecordatorioComponent implements OnInit {
     private http: HttpClient,
     private dateAdapter: DateAdapter<any>,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialogRef: MatDialogRef<EditarRecordatorioComponent>,
+    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any // Inject the dialog data
   ) {
     this.selectedTime = this.dateAdapter.format(new Date(), 'timeInput');
     this.form = this.fb.group({
@@ -81,6 +89,8 @@ export class EditarRecordatorioComponent implements OnInit {
       endDate: [''],
       uniqueDate: ['']
     });
+
+    this.reminderId = data.reminderId; // Assign the reminderId from the dialog data
   }
 
   ngOnInit(): void {
@@ -93,8 +103,8 @@ export class EditarRecordatorioComponent implements OnInit {
     if (currentUser) {
       this.http.get(`https://petpalzapi.onrender.com/api/Usuario/${currentUser.id}`).subscribe(
         (userData: any) => {
-          this.pets = Array.isArray(userData.mascotas) 
-            ? userData.mascotas 
+          this.pets = Array.isArray(userData.mascotas)
+            ? userData.mascotas
             : userData.mascotas?.$values || []; // Ensure it's an array
           this.cdr.detectChanges();
         },
@@ -130,7 +140,7 @@ export class EditarRecordatorioComponent implements OnInit {
   }
 
   closeModal(): void {
-    this.close.emit();
+    this.dialogRef.close();
   }
 
   onSubmit(): void {
@@ -152,12 +162,46 @@ export class EditarRecordatorioComponent implements OnInit {
         response => {
           console.log('Recordatorio actualizado correctamente', response);
           this.closeModal();
+          this.openSuccessDialog();
         },
         error => {
           console.error('Error actualizando recordatorio', error);
         }
       );
     }
+  }
+
+  openSuccessDialog() {
+    const dialogRef = this.dialog.open(UpdateReminderDialogComponent, {
+      width: '250px',
+      data: { message: 'Recordatorio actualizado correctamente' }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      
+    });
+  }
+
+  openDeleteDialog(): void {
+    const dialogRef = this.dialog.open(DeleteReminderDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteReminder();
+      }
+    });
+  }
+
+  deleteReminder(): void {
+    this.http.delete(`https://petpalzapi.onrender.com/api/Recordatorio/${this.reminderId}`).subscribe(
+      response => {
+        console.log('Recordatorio eliminado correctamente', response);
+        this.closeModal();
+      },
+      error => {
+        console.error('Error eliminando recordatorio', error);
+      }
+    );
   }
 }
 

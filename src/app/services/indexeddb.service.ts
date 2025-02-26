@@ -1,39 +1,41 @@
 import { Injectable } from '@angular/core';
-import { openDB, DBSchema, IDBPDatabase } from 'idb';
-
-interface MyDB extends DBSchema {
-  user: {
-    key: string;
-    value: any;
-  };
-}
+import { openDB, deleteDB, wrap, unwrap } from 'idb';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IndexedDBService {
-  private dbPromise: Promise<IDBPDatabase<MyDB>>;
+  private dbName = 'petPalzDB';
+  private storeName = 'users';
 
   constructor() {
-    this.dbPromise = openDB<MyDB>('my-database', 1, {
+    this.initDB();
+  }
+
+  private async initDB(): Promise<void> {
+    await openDB(this.dbName, 1, {
       upgrade(db) {
-        db.createObjectStore('user');
+        db.createObjectStore('users', { keyPath: 'id' });
       }
     });
   }
 
   async setUser(user: any): Promise<void> {
-    const db = await this.dbPromise;
-    await db.put('user', user, 'currentUser');
+    const db = await openDB(this.dbName, 1);
+    const tx = db.transaction(this.storeName, 'readwrite');
+    await tx.store.put(user);
+    await tx.done;
   }
 
   async getUser(): Promise<any> {
-    const db = await this.dbPromise;
-    return await db.get('user', 'currentUser');
+    const db = await openDB(this.dbName, 1);
+    return await db.transaction(this.storeName).store.getAll();
   }
 
   async deleteUser(): Promise<void> {
-    const db = await this.dbPromise;
-    await db.delete('user', 'currentUser');
+    const db = await openDB(this.dbName, 1);
+    const tx = db.transaction(this.storeName, 'readwrite');
+    await tx.store.clear();
+    await tx.done;
   }
 }

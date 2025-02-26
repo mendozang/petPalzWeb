@@ -17,7 +17,8 @@
       (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
     <header>
       <h1>Dashboard - <span *ngIf="selectedPet">{{selectedPet.nombre}}</span></h1>
-      <button mat-icon-button class="pets-btn" [matMenuTriggerFor]="menu"><mat-icon class="pets-icon">pets</mat-icon></button>
+      <button mat-icon-button class="pets-btn" [matMenuTriggerFor]="menu"><mat-icon
+          class="pets-icon">pets</mat-icon></button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item *ngFor="let pet of pets" (click)="selectPet(pet)">
           <span>{{ pet.nombre }}</span>
@@ -78,7 +79,8 @@
               <div class="all-reminders">
                 <div class="individual-reminder" *ngFor="let reminder of reminders">
                   <div class="pet-image">
-                    <img [src]="reminder.pet.imagenUrl || 'assets/default-pet.png'" alt="imagen de {{ reminder.pet.nombre }}">
+                    <img [src]="reminder.pet.imagenUrl || 'assets/default-pet.png'"
+                      alt="imagen de {{ reminder.pet.nombre }}">
                   </div>
                   <div class="reminder-info">
                     <div class="reminder-time">
@@ -107,6 +109,16 @@
             <h2>Ubicación de la mascota</h2>
             <div class="location-container">
               <div *ngIf="isBrowser" #map id="map"></div>
+              <div class="last-location">
+                <div class="title-icon">
+                  <mat-icon class="icon-clock">schedule</mat-icon>
+                  <div class="title-location">Ultima fecha de ubicación:</div>
+                </div>
+                <div class="time-date">
+                  <div class="location-date">{{ lastLocation?.fechaRegistro | date: 'dd/MM/yyyy' }}</div>
+                  <div class="location-time">{{ lastLocation?.fechaRegistro | date: 'HH:mm:ss' }}</div>
+                </div>
+              </div>
             </div>
           </section>
         </section>

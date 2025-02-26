@@ -23,12 +23,6 @@
     <div class="main-body">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <div class="form-row">
-            <mat-form-field appearance="outline">
-              <mat-label>Mascota</mat-label>
-              <input matInput [value]="petName" disabled>
-            </mat-form-field>
-          </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline">
@@ -88,8 +82,8 @@
           </div>
         </div>
         <div class="footer">
-          <button mat-flat-button class="delete-btn">Eliminar</button>
-          <button mat-flat-button type="submit" class="update-btn">Actualizar</button>
+          <button mat-flat-button class="delete-btn" type="button" (click)="openDeleteDialog()">Eliminar recordatorio</button>
+          <button mat-flat-button type="submit" class="update-btn" [disabled]="form.invalid">Actualizar</button>
         </div>
       </form>
     </div>

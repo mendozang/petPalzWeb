@@ -35,7 +35,6 @@ registerLocaleData(localeEs, 'es');
     MatMenuModule,
     MatDialogModule,
     MatDatepickerModule,
-    EditarRecordatorioComponent
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -170,17 +169,15 @@ export class MascotaComponent implements OnInit {
   }
 
   openEditReminderModal(reminderId: number): void {
-    this.http.get(`https://petpalzapi.onrender.com/api/Recordatorio/${reminderId}`).subscribe(
-      (reminder: any) => {
-        const dialogRef = this.dialog.open(EditarRecordatorioComponent, {
-          data: { reminder }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.loadReminders(this.selectedDate); // Reload reminders after editing
-          }
-        });
+    const dialogRef = this.dialog.open(EditarRecordatorioComponent, {
+      data: { reminderId }
+    });
+  
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.loadReminders(this.selectedDate); // Reload reminders after editing
+      }
+        
       },
       error => {
         console.error('Error fetching reminder:', error);
@@ -188,8 +185,10 @@ export class MascotaComponent implements OnInit {
     );
   }
 
+
   isMascotaModalVisible = false;
   isRecordatorioModalVisible = false;
+  isEditarRecordtorioModalVisible = false;
 
   showMascotaModal() {
     this.isMascotaModalVisible = true;

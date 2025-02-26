@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditarPerfilComponent } from '../editar-perfil/editar-perfil.component';
 
 @Component({
   selector: 'app-configuracion',
@@ -27,7 +29,7 @@ export class ConfiguracionComponent implements OnInit {
 
   screenWidth = signal<number>(0);
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {
     if (typeof window !== 'undefined') {
       this.screenWidth.set(window.innerWidth);
     }
@@ -66,4 +68,19 @@ export class ConfiguracionComponent implements OnInit {
     await this.authService.logout();
     this.router.navigate(['/']);
   }
+
+  isEditProfileModalVisible = false;
+
+  showEditProfileModal(): void {
+    const dialogRef = this.dialog.open(EditarPerfilComponent, {
+      width: '600px',
+      data: { userId: this.authService.getCurrentUser().id }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal closed', result);
+      this.isEditProfileModalVisible = false; // Ensure state updates if needed
+    });
+  }
+
 }

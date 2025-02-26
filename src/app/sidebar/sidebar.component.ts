@@ -1,5 +1,5 @@
-import { Component, input, output, OnInit } from '@angular/core';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,11 +14,11 @@ import { AuthService } from '../services/auth.service';
     CommonModule,
   ],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  isLeftSidebarCollapsed = input.required<boolean>();
-  changeIsLeftSidebarCollapsed = output<boolean>();
+  @Input() isLeftSidebarCollapsed!: boolean;
+  @Output() changeIsLeftSidebarCollapsed = new EventEmitter<boolean>();
   currentUser: any;
 
   items = [
@@ -44,7 +44,7 @@ export class SidebarComponent implements OnInit {
     },
     {
       routeLink: '/configuracion',
-      icon:'settings',
+      icon: 'settings',
       label: "Configuración"
     }
   ];
@@ -58,6 +58,10 @@ export class SidebarComponent implements OnInit {
   }
 
   toggleCollapse(): void {
-    this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed())
+    this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed);
+  }
+
+  trackByFn(index: number, item: any): number {
+    return index; 
   }
 }
