@@ -1,0 +1,104 @@
+@import "../../styles.scss";
+
+main {
+    padding: 2rem 1rem 2rem 1rem;
+    background-color: $page-color;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.pet-card,
+.right-side {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem 1rem 2rem;
+    background-color: $white-text;
+    margin-top: 1rem;
+}
+
+.pet-card {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+}
+
+.right-side {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+}
+
+.all-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: column;
+}
+
+.pet-image img{
+    height: 300px;
+  width: 300px;
+  border-radius: 1rem;
+  object-fit: cover; 
+}
+
+.pet-name h4 {
+    color: $text-color;
+    font-weight: 600;
+}
+
+.pet-name h6 {
+    color: $primary-purple;
+}
+
+.header-title h4 {
+    color: $text-color;
+    font-weight: 600;
+}
+
+mat-icon {
+    color: $secondary-green;
+}
+
+.pet-info-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    background-color: $container-purple;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+}
+
+.pet-info-item p {
+    color: $secondary-purple;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.pet-info-item h6 {
+    margin-bottom: 0;
+}
+
+.header-pet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.male-icon {
+    color: #4285F4; /* Change to your desired color for male */
+}
+
+.female-icon {
+    color: #F576AC; /* Change to your desired color for female */
+}

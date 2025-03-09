@@ -55,28 +55,40 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <input matInput [matDatepicker]="picker" type="text" class="form-control" placeholder="Fecha de nacimiento"
-              formControlName="birthdate" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Año de nacimiento</mat-label>
+              <mat-select formControlName="birthyear">
+                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Género</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option value="1">Macho</mat-option>
+                <mat-option value="2">Hembra</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
           <mat-form-field appearance="outline">
-            <mat-label>Género</mat-label>
-            <mat-select formControlName="gender">
-              <mat-option value="1">Femenino</mat-option>
-              <mat-option value="2">Masculino</mat-option>
+            <mat-label>Tamaño</mat-label>
+            <mat-select formControlName="size">
+              <mat-option *ngFor="let size of currentSizeOptions" [value]="size.value">
+                {{ size.viewValue }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
+
 
           <div class="form-group">
             <mat-form-field appearance="outline">
               <input matInput type="text" placeholder="Color" formControlName="color" />
             </mat-form-field>
-  
+
             <mat-form-field appearance="outline">
-              <input matInput type="number" placeholder="Peso (Kg)" formControlName="weight" />
+              <input matInput type="number" placeholder="Peso en Kg (opcional)" formControlName="weight" />
             </mat-form-field>
           </div>
           <button mat-flat-button type="submit" class="add-button">Añadir</button>

@@ -14,9 +14,15 @@
     </header>
     <div class="body-trimmed">
       <mat-tab-group>
-        <mat-tab label="Información"> Content 0 </mat-tab>
-        <mat-tab label="Salud"> Content 1 </mat-tab>
-        <mat-tab label="Actividad"> Content 2 </mat-tab>
+        <mat-tab label="Información"> 
+          <app-monitoreo-informacion [petId]="pet.id"></app-monitoreo-informacion>
+        </mat-tab>
+        <mat-tab label="Historial Medico"> 
+          <app-monitoreo-historial></app-monitoreo-historial>  
+        </mat-tab>
+        <mat-tab label="Salud"> 
+          <app-monitoreo-salud></app-monitoreo-salud>  
+        </mat-tab>
         <mat-tab label="Ubicación"> Content 3 </mat-tab>
         <mat-tab label="Alertas"> Content 3 </mat-tab>
       </mat-tab-group>      

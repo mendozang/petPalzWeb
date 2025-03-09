@@ -3,7 +3,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import { Chart, registerables } from 'chart.js';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../custom-date-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +14,7 @@ import { AuthService } from '../services/auth.service';
 import { EditarRecordatorioComponent } from '../editar-recordatorio/editar-recordatorio.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { DashboardMonitoreoComponent } from '../dashboard-monitoreo/dashboard-monitoreo.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +27,8 @@ import { MatDialog } from '@angular/material/dialog';
     AgregarRecordatorioComponent,
     RouterModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    DashboardMonitoreoComponent
   ],
   providers: [
       { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -49,13 +50,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   isRecordatorioModalVisible = false;
   map: any;
   lastLocation: any = null;
+  healthData: any = null;
 
-  @ViewChild('healthTemp') healthTemp!: ElementRef;
-  @ViewChild('healthRate') healthRate!: ElementRef;
-  @ViewChild('healthBreathing') healthBreathing!: ElementRef;
-  @ViewChild('healthVfc') healthVfc!: ElementRef;
   @ViewChild('map') mapContainer!: ElementRef;
   @ViewChild('daysContainer') daysContainer!: ElementRef;
+  @ViewChild(DashboardMonitoreoComponent) dashboardMonitoreoComponent!: DashboardMonitoreoComponent;
 
   changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
     this.isLeftSidebarCollapsed.set(isLeftSidebarCollapsed);
@@ -96,6 +95,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.authService.currentUser$.subscribe(user => {
       if (user && user.id) {
         this.loadPets();
+        this.loadPetLocation(this.selectedPet.id);
+        this.loadReminders(this.currentDate);
       } else {
         console.error('No current user or user ID found.');
       }
@@ -104,7 +105,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.isBrowser) {
-      setTimeout(() => this.initializeChart(), 3);
       setTimeout(() => this.initializeMap(), 3);
       this.updateCalendar();
       setTimeout(() => this.centerCurrentDay(), 3);
@@ -125,6 +125,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.selectedPet = this.pets[0]; // Select the first pet by default
             this.loadReminders(this.currentDate);
             this.loadPetLocation(this.selectedPet.id);
+            this.loadHealthData(this.selectedPet.id);
           }
         },
         error => {
@@ -168,6 +169,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
+  loadHealthData(mascotaId: number): void {
+    this.http.get(`https://petpalzapi.onrender.com/api/Monitoreo/mascota/${mascotaId}`).subscribe(
+      (response: any) => {
+        const healthData = response.$values || [];
+        if (healthData.length > 0) {
+          this.healthData = healthData[0]; // Assuming the first entry is the latest
+          this.dashboardMonitoreoComponent.updateCharts(this.healthData);
+          this.dashboardMonitoreoComponent.updateVitalSigns(this.healthData);
+        }
+      },
+      error => {
+        console.error('Error fetching health data:', error);
+      }
+    );
+  }
+
   async updateMap(lat: number, lng: number): Promise<void> {
     if (this.map) {
       this.map.setView([lat, lng], 13);
@@ -207,6 +224,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.selectedPet = pet;
     this.loadReminders(this.currentDate);
     this.loadPetLocation(pet.id);
+    this.loadHealthData(pet.id);
   }
 
   openEditReminderModal(reminderId: number): void {
@@ -224,72 +242,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error fetching reminder:', error);
       }
     );
-  }
-
-  //health charts
-  initializeChart(): void {
-    Chart.register(...registerables);
-    const temp = this.healthTemp.nativeElement.getContext('2d');
-    new Chart(temp, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          label: 'Temperatura',
-          data: [400, 50],
-          backgroundColor: ['#0ECBA1', '#E9EDF0']
-        }]
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false
-      }
-    });
-    const rate = this.healthRate.nativeElement.getContext('2d');
-    new Chart(rate, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          label: 'Ritmo Cardíaco',
-          data: [300, 150],
-          backgroundColor: ['#0ECBA1', '#E9EDF0']
-        }]
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false
-      }
-    });
-    const breathing = this.healthBreathing.nativeElement.getContext('2d');
-    new Chart(breathing, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          label: 'Respiración',
-          data: [200, 250],
-          backgroundColor: ['#0ECBA1', '#E9EDF0']
-        }]
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false
-      }
-    });
-    const vfc = this.healthVfc.nativeElement.getContext('2d');
-    new Chart(vfc, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          label: 'VFC',
-          data: [100, 350],
-          backgroundColor: ['#0ECBA1', '#E9EDF0']
-        }]
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false
-      }
-    });
-
   }
 
   //map

@@ -19,6 +19,7 @@ import { CustomDateAdapter, CUSTOM_DATE_FORMATS } from '../custom-date-adapter';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditarRecordatorioComponent } from '../editar-recordatorio/editar-recordatorio.component';
+import { EditarMascotaComponent } from '../editar-mascota/editar-mascota.component';
 
 registerLocaleData(localeEs, 'es');
 
@@ -94,6 +95,7 @@ export class MascotaComponent implements OnInit {
       this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
     }
 
+    this.selectedDate = new Date();
     this.loadPets();
     this.loadReminders(this.selectedDate);
   }
@@ -184,6 +186,18 @@ export class MascotaComponent implements OnInit {
       }
     );
   }
+
+ openEditPetModal(pet: any): void {
+  const dialogRef = this.dialog.open(EditarMascotaComponent, {
+    data: { pet }
+  });
+
+  dialogRef.afterClosed().subscribe((result: any) => {
+    if (result) {
+      this.loadPets(); // Reload pets after editing
+    }
+  });
+}
 
 
   isMascotaModalVisible = false;

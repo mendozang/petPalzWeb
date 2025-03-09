@@ -105,20 +105,6 @@ main.collapsed header h1 {
   justify-content: space-between;
 }
 
-.chart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#health-vfc,
-#health-breathing,
-#health-rate,
-#health-temp {
-  height: 4rem;
-}
-
 #map {
   height: 400px;
   width: 400px;
@@ -303,9 +289,4 @@ main.collapsed header h1 {
   padding-left: 0.5rem;
   font-size: 1.5rem;
   font-weight: 500;
-}
-
-.time-date {
-  display: flex;
-  flex-direction: row;
 }

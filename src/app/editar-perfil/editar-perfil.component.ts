@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,8 @@ import { UpdateProfileDialogComponent } from './success-dialog/update-profile-di
     ReactiveFormsModule
   ],
   templateUrl: './editar-perfil.component.html',
-  styleUrls: ['./editar-perfil.component.scss']
+  styleUrls: ['./editar-perfil.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditarPerfilComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
@@ -54,14 +55,14 @@ export class EditarPerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe(async user => {
       if (user) {
         this.userId = user.id;
         this.form.patchValue({
           nombre: user.nombre,
           email: user.email
         });
-        this.imageUrl = user.imagenUrl || '/assets/default-avatar.jpg';
+        this.imageUrl = await this.authService.getUserImage(user.id) || '/assets/default-avatar.jpg';
       }
     });
   }
@@ -112,6 +113,9 @@ export class EditarPerfilComponent implements OnInit {
     try {
       await this.http.put(`https://petpalzapi.onrender.com/api/Usuario/${this.userId}`, updateData).toPromise();
       await this.authService.updateCurrentUser({ ...this.authService.currentUserValue, ...updateData });
+      if (this.selectedFile) {
+        await this.authService.updateUserImage(this.userId!, this.imageUrl as string);
+      }
       this.closeModal();
       this.openSuccessDialog();
     } catch (error) {

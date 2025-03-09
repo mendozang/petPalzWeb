@@ -1,7 +1,13 @@
-import { Component, signal, HostListener, OnInit} from '@angular/core';
+import { Component, signal, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import {MatTabsModule} from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { MonitoreoHistorialComponent } from '../monitoreo-historial/monitoreo-historial.component';
+import { MonitoreoInformacionComponent } from '../monitoreo-informacion/monitoreo-informacion.component';
+import { MonitoreoSaludComponent } from '../monitoreo-salud/monitoreo-salud.component';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-monitoreo',
@@ -9,13 +15,16 @@ import {MatTabsModule} from '@angular/material/tabs';
     SidebarComponent,
     CommonModule,
     MatTabsModule,
+    MonitoreoHistorialComponent,
+    MonitoreoInformacionComponent,
+    MonitoreoSaludComponent
   ],
   templateUrl: './monitoreo.component.html',
-  styleUrl: './monitoreo.component.scss',
-  
+  styleUrls: ['./monitoreo.component.scss'],
 })
 export class MonitoreoComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
+  pet: any;
 
   changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
     this.isLeftSidebarCollapsed.set(isLeftSidebarCollapsed);
@@ -23,7 +32,11 @@ export class MonitoreoComponent implements OnInit {
 
   screenWidth = signal<number>(0);
 
-  constructor() {
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
     if (typeof window !== 'undefined') {
       this.screenWidth.set(window.innerWidth);
     }
@@ -44,6 +57,27 @@ export class MonitoreoComponent implements OnInit {
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
       this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
+    }
+
+    this.route.paramMap.subscribe(params => {
+      const petId = params.get('id');
+      if (petId) {
+        this.loadPetData(petId);
+      }
+    });
+  }
+
+  loadPetData(petId: string): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.http.get(`https://petpalzapi.onrender.com/api/Mascota/${petId}`).subscribe(
+        (petData: any) => {
+          this.pet = petData;
+        },
+        error => {
+          console.error('Error fetching pet data:', error);
+        }
+      );
     }
   }
 }

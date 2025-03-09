@@ -46,7 +46,7 @@ export const routes: Routes = [
         component: GuiasDetallesComponent
     },
     {
-        path: 'monitoreo',
+        path: 'mascota/monitoreo/:id',
         component: MonitoreoComponent
     },
     {

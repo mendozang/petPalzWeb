@@ -24,6 +24,7 @@ export class AuthService {
 
   async updateCurrentUser(user: any): Promise<void> {
     await this.indexedDBService.setUser(user);
+    localStorage.setItem('currentUser', JSON.stringify(user)); // Persist user to localStorage
     this.currentUserSubject.next(user);
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
   async setCurrentUser(user: any): Promise<void> {
     const freshUserData = await this.http.get(`${this.apiUrl}/${user.id}`).toPromise();
     await this.indexedDBService.setUser(freshUserData);
+    localStorage.setItem('currentUser', JSON.stringify(freshUserData)); // Persist user to localStorage
     this.currentUserSubject.next(freshUserData);
   }
 
@@ -41,11 +43,13 @@ export class AuthService {
     const user = await this.indexedDBService.getUser();
     if (user) {
       this.currentUserSubject.next(user);
+      localStorage.setItem('currentUser', JSON.stringify(user)); // Persist user to localStorage
     }
   }
 
   async logout(): Promise<void> {
     await this.indexedDBService.deleteUser();
+    localStorage.removeItem('currentUser'); // Remove user from localStorage
     this.currentUserSubject.next(null);
   }
 
@@ -55,5 +59,13 @@ export class AuthService {
 
   getCurrentUser(): any {
     return this.currentUserSubject.value;
+  }
+
+  async updateUserImage(userId: number, imageUrl: string): Promise<void> {
+    await this.indexedDBService.setImage(userId, imageUrl);
+  }
+
+  async getUserImage(userId: number): Promise<string | null> {
+    return await this.indexedDBService.getImage(userId);
   }
 }

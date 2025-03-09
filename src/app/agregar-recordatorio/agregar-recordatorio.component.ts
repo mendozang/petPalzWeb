@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,13 +42,12 @@ export class AgregarRecordatorioComponent implements OnInit {
   pets: any[] = [];
 
   variables: Variable[] = [
-    { value: '0', viewValue: 'Una vez'},
-    { value: '1', viewValue: 'Cada 8 horas' },
-    { value: '2', viewValue: 'Cada 12 horas' },
-    { value: '3', viewValue: 'Diario' },
-    { value: '4', viewValue: 'Semanal' },
-    { value: '5', viewValue: 'Mensual' },
-    { value: '6', viewValue: 'Anual' }
+    { value: '0', viewValue: 'Cada 8 horas' },
+    { value: '1', viewValue: 'Cada 12 horas' },
+    { value: '2', viewValue: 'Diario' },
+    { value: '3', viewValue: 'Semanal' },
+    { value: '4', viewValue: 'Mensual' },
+    { value: '5', viewValue: 'Anual' }
   ];
 
   reminders: Reminder[] = [
@@ -69,12 +68,12 @@ export class AgregarRecordatorioComponent implements OnInit {
   ) {
     this.selectedTime = this.dateAdapter.format(new Date(), 'timeInput');
     this.form = this.fb.group({
-      pet: [''],
-      type: [''],
-      name: [''],
+      pet: ['', Validators.required],
+      type: ['', Validators.required],
+      name: ['', Validators.required],
       description: [''],
-      time: [''],
-      frecuency: [''],
+      time: ['', Validators.required],
+      frecuency: ['', Validators.required],
       startDate: [''],
       endDate: [''],
       uniqueDate: ['']
@@ -109,28 +108,51 @@ export class AgregarRecordatorioComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const formValue = this.form.value;
-      const reminderData = {
-        tipo: formValue.type,
-        nombre: formValue.name,
-        descripcion: formValue.description,
-        hora: formValue.time ? `${formValue.time}:00` : null, // Ensure time is in hh:mm:ss format
-        frecuencia: formValue.frecuency,
-        fechaInicio: formValue.startDate ? new Date(formValue.startDate).toISOString() : null,
-        fechaFin: formValue.endDate ? new Date(formValue.endDate).toISOString() : null,
-        fechaUnica: formValue.uniqueDate ? new Date(formValue.uniqueDate).toISOString() : null,
-        mascotaId: formValue.pet
-      };
+      const remindersToCreate = this.generateReminders(formValue);
 
-      this.http.post('https://petpalzapi.onrender.com/api/Recordatorio', reminderData).subscribe(
-        response => {
-          console.log('Recordatorio creado correctamente', response);
-          this.closeModal();
-        },
-        error => {
-          console.error('Error creando recordatorio', error);
-        }
-      );
+      remindersToCreate.forEach(reminderData => {
+        this.http.post('https://petpalzapi.onrender.com/api/Recordatorio', reminderData).subscribe(
+          response => {
+            console.log('Recordatorio creado correctamente', response);
+          },
+          error => {
+            console.error('Error creando recordatorio', error);
+          }
+        );
+      });
+
+      this.closeModal();
     }
+  }
+
+  generateReminders(formValue: any): any[] {
+    const reminders = [];
+    const baseReminder = {
+      tipo: formValue.type,
+      nombre: formValue.name,
+      descripcion: formValue.description,
+      hora: formValue.time ? `${formValue.time}:00` : null, // Ensure time is in hh:mm:ss format
+      frecuencia: formValue.frecuency,
+      fechaInicio: formValue.startDate ? new Date(formValue.startDate).toISOString() : null,
+      fechaFin: formValue.endDate ? new Date(formValue.endDate).toISOString() : null,
+      fechaUnica: formValue.uniqueDate ? new Date(formValue.uniqueDate).toISOString() : null,
+      mascotaId: formValue.pet
+    };
+
+    reminders.push(baseReminder);
+
+    if (formValue.frecuency === '0' || formValue.frecuency === '1') {
+      const intervalHours = formValue.frecuency === '0' ? 8 : 12;
+      const baseDate = new Date(formValue.uniqueDate || formValue.startDate);
+      for (let i = 1; i < 24 / intervalHours; i++) {
+        const newDate = new Date(baseDate);
+        newDate.setHours(newDate.getHours() + intervalHours * i);
+        const newReminder = { ...baseReminder, fechaUnica: newDate.toISOString() };
+        reminders.push(newReminder);
+      }
+    }
+
+    return reminders;
   }
 }
 

@@ -59,7 +59,7 @@
                 <mat-label>Rango de fechas</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="startDate" placeholder="Fecha de inicio">
-                  <input matEndDate formControlName="endDate" placeholder="Fecha de fin">
+                  <input matEndDate formControlName="endDate" placeholder="Fecha de fin" (dateChange)="picker.close()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -68,7 +68,7 @@
             <ng-template #normalDatePicker>
               <mat-form-field appearance="outline">
                 <input matInput [matDatepicker]="datePicker" type="text" class="form-control" placeholder="Fecha"
-                  formControlName="uniqueDate" />
+                  formControlName="uniqueDate" (dateChange)="datePicker.close()"/>
                 <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                 <mat-datepicker #datePicker></mat-datepicker>
               </mat-form-field>

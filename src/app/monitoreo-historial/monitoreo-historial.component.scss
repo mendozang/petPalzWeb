@@ -1,0 +1,60 @@
+@import "../../styles.scss";
+
+main {
+    padding: 2rem 1rem 2rem 1rem;
+    background-color: $page-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+mat-expansion-panel {
+    width: 100%;
+}
+
+mat-panel-title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.treatment-list,
+.illnes-list,
+.vaccines-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 1rem;
+}
+
+.pet-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: $white-text;
+}
+
+button {
+    margin-top: 1rem;
+    width: 30%;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+::ng-deep div .mat-expansion-panel-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+::ng-deep .mat-expansion-panel-header {
+    padding: 3rem !important;
+}
