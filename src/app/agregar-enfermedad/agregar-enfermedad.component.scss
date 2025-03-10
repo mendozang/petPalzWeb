@@ -1,0 +1,112 @@
+@import "../../styles.scss";
+
+.material-symbols-outlined {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: $secondary-green;
+  transition: all 0.3s ease;
+}
+
+.material-symbols-outlined:hover {
+  color: $primary-purple;
+  cursor: pointer;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+
+  .modal-content {
+    position: relative;
+    background: $white-text;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    max-width: 800px;
+    z-index: 1001;
+  }
+
+  .main-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  mat-datepicker-toggle {
+    color: $primary-purple
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .add-button {
+    width: 80%;
+    justify-self: center;
+  }
+
+  ::ng-deep .mat-primary .mat-mdc-select-arrow {
+    color: $secondary-green;
+  }
+  
+  ::ng-deep .mat-mdc-form-field.mat-focused.mat-primary {
+    color: $primary-purple;
+  }
+  
+  ::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
+    color: $secondary-green;
+  }
+  
+  ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border-color: $primary-green !important;
+  }
+  
+  .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border-color: $primary-green !important;
+  }
+  
+  ::ng-deep .mat-calendar-body-selected.mat-calendar-body-today {
+    box-shadow: inset 0 0 0 1px $secondary-purple !important;
+  }
+
+  ::ng-deep .cdk-overlay-container {
+    z-index: 1002 !important;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  mat-form-field {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+
+  .form-row {
+    gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }

@@ -1,10 +1,16 @@
 import { Component, signal, OnInit, HostListener } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-guias-detalles',
-  imports: [SidebarComponent,
+  imports: [
+    SidebarComponent,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
     CommonModule
   ],
   templateUrl: './guias-detalles.component.html',

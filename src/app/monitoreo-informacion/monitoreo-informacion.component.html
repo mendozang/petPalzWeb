@@ -17,7 +17,7 @@
                     <h6>{{ pet?.raza }}</h6>
                 </div>
                 <div class="pet-gender">
-                    <mat-icon [ngClass]="{'male-icon': pet?.genero === '1', 'female-icon': pet?.genero === '2'}">
+                    <mat-icon id="gender-icon" [ngClass]="{'male-icon': pet?.genero === '1', 'female-icon': pet?.genero === '2'}">
                         {{ pet?.genero === '1' ? 'male' : 'female' }}
                     </mat-icon>
                 </div>
@@ -30,9 +30,7 @@
                         <h4>Sobre <span>{{ pet?.nombre }}</span></h4>
                         <p>{{ pet?.descripcion }}</p>
                     </div>
-                    <div class="edit-icon">
-                        <mat-icon>edit</mat-icon>
-                    </div>
+                    
                 </div>
     
                 <div class="pet-info">

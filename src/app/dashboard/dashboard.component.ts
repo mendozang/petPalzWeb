@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       (response: any) => {
         const locations = response.$values || [];
         if (locations.length > 0) {
-          this.lastLocation = locations[0]; // Assuming the first entry is the latest
+          this.lastLocation = locations[locations.length - 1]; 
           this.updateMap(this.lastLocation.latitud, this.lastLocation.longitud);
         }
       },
@@ -174,7 +174,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       (response: any) => {
         const healthData = response.$values || [];
         if (healthData.length > 0) {
-          this.healthData = healthData[0]; // Assuming the first entry is the latest
+          this.healthData = healthData[healthData.length - 1]; 
           this.dashboardMonitoreoComponent.updateCharts(this.healthData);
           this.dashboardMonitoreoComponent.updateVitalSigns(this.healthData);
         }

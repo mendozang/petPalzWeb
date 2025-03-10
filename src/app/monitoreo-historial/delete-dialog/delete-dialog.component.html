@@ -1,0 +1,10 @@
+<div class="dialog-container">
+    <h4 mat-dialog-title>Confirmar eliminación</h4>
+<div mat-dialog-content>
+  <p>¿Estás seguro de que deseas eliminar esta entrada?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button class="warn" (click)="onConfirm()">Eliminar</button>
+</div>
+</div>

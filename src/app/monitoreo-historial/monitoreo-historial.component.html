@@ -12,13 +12,29 @@
                 <mat-panel-title>Vacunas</mat-panel-title>        
             </mat-expansion-panel-header>
             <div class="vaccines-list">
-                <div class="pet-item">
-                    <h6>Nombre vacuna</h6>
-                    <p>Fecha</p>
-                    <p>Descripción</p>
+                <div *ngIf="vacunas.length === 0" class="no-items-message">
+                    <p>No hay vacunas añadidas aún.</p>
+                </div>
+                <div class="pet-item" *ngFor="let vacuna of vacunas">
+                    <div class="pet-item-header">
+                        <h6>{{ vacuna.nombre }}</h6>
+                    <mat-icon class="vert-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="openEditarVacunaModal(vacuna)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item (click)="openDeleteDialog(vacuna, 'vacuna')">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                    </div>
+                    <p>{{ formatDate(vacuna.fechaAplicacion) }}</p>
+                    <p>{{ vacuna.descripcion }}</p>
                 </div>
             </div>
-            <button mat-flat-button>Añadir vacuna
+            <button class="add-button" mat-flat-button (click)="openAgregarVacunaModal()">Añadir vacuna
                 <mat-icon>add</mat-icon>
             </button>
         </mat-expansion-panel>
@@ -28,13 +44,29 @@
                 <mat-panel-title>Enfermedades</mat-panel-title>        
             </mat-expansion-panel-header>
             <div class="illness-list">
-                <div class="pet-item">
-                    <h6>Nombre vacuna</h6>
-                    <p>Fecha</p>
-                    <p>Descripción</p>
+                <div *ngIf="enfermedades.length === 0" class="no-items-message">
+                    <p>No hay enfermedades añadidas aún.</p>
+                </div>
+                <div class="pet-item" *ngFor="let enfermedad of enfermedades">
+                    <div class="pet-item-header">
+                        <h6>{{ enfermedad.nombre }}</h6>
+                    <mat-icon class="vert-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="openEditarEnfermedadModal(enfermedad)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item (click)="openDeleteDialog(enfermedad, 'enfermedad')">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                    </div>
+                    <p>{{ formatDate(enfermedad.fechaDiagnostico) }}</p>
+                    <p>{{ enfermedad.descripcion }}</p>
                 </div>
             </div>
-            <button mat-flat-button>Añadir enfermedad
+            <button class="add-button" mat-flat-button (click)="openAgregarEnfermedadModal()">Añadir enfermedad
                 <mat-icon>add</mat-icon>
             </button>
         </mat-expansion-panel>
@@ -44,13 +76,30 @@
                 <mat-panel-title>Tratamientos</mat-panel-title>        
             </mat-expansion-panel-header>
             <div class="treatment-list">
-                <div class="pet-item">
-                    <h6>Nombre vacuna</h6>
-                    <p>Fecha</p>
-                    <p>Descripción</p>
+                <div *ngIf="tratamientos.length === 0" class="no-items-message">
+                    <p>No hay tratamientos añadidos aún.</p>
+                </div>
+                <div class="pet-item" *ngFor="let tratamiento of tratamientos">
+                    <div class="pet-item-header">
+                        <h6>{{ tratamiento.nombre }}</h6>
+                    <mat-icon class="vert-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="openEditarTratamientoModal(tratamiento)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item (click)="openDeleteDialog(tratamiento, 'tratamiento')">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                    </div>
+                    <p>{{ formatDate(tratamiento.fechaInicio) }}</p>
+                    <p>{{ formatDate(tratamiento.fechaFin) }}</p>
+                    <p>{{ tratamiento.descripcion }}</p>
                 </div>
             </div>
-            <button mat-flat-button>Añadir tratamiento
+            <button class="add-button" mat-flat-button (click)="openAgregarTratamientoModal()">Añadir tratamiento
                 <mat-icon>add</mat-icon>
             </button>
         </mat-expansion-panel>

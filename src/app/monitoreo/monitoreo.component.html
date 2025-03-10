@@ -18,12 +18,11 @@
           <app-monitoreo-informacion [petId]="pet.id"></app-monitoreo-informacion>
         </mat-tab>
         <mat-tab label="Historial Medico"> 
-          <app-monitoreo-historial></app-monitoreo-historial>  
+          <app-monitoreo-historial [petId]="pet.id"></app-monitoreo-historial>  
         </mat-tab>
-        <mat-tab label="Salud"> 
+        <mat-tab label="Monitoreo"> 
           <app-monitoreo-salud></app-monitoreo-salud>  
         </mat-tab>
-        <mat-tab label="Ubicación"> Content 3 </mat-tab>
         <mat-tab label="Alertas"> Content 3 </mat-tab>
       </mat-tab-group>      
     </div>
