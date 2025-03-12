@@ -26,16 +26,16 @@
                       </div>
 
                       <div class="articles-body">
-                        <h4 class="title-category">Titulo categoria</h4>
+                        <h4 class="title-category">{{ category }}</h4>
                       <div class="all-articles">
-                        <div class="article">
+                        <div class="article" *ngFor="let article of articles">
                             <div class="article-image">
-                                <img src="/assets/default-pet.png" alt="Imagen default">
+                                <img [src]="article.imagenUrl || '/assets/default-pet.png'" alt="Imagen del artículo">
                             </div>
                             <div class="article-content">
-                                <h5>Titulo articulo</h5>
-                                <p>Resumen articulo</p>
-                                <button mat-flat-button class="more-button">Ver más</button>
+                                <h5>{{ article.titulo }}</h5>
+                                <p>{{ article.resumen }}</p>
+                                <button mat-flat-button class="more-button" [routerLink]="['/guias/guias-detalles', category, article.id]">Ver más</button>
                             </div>
                         </div>
                       </div>

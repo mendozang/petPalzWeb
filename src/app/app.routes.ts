@@ -14,6 +14,7 @@ import { AgregarRecordatorioComponent } from './agregar-recordatorio/agregar-rec
 import { GuiasDetallesComponent } from './guias-detalles/guias-detalles.component';
 import { VeterinariosDetallesComponent } from './veterinarios-detalles/veterinarios-detalles.component';
 import { MascotaDetallesComponent } from './mascota-detalles/mascota-detalles.component';
+import { GuiasIndividualComponent } from './guias-individual/guias-individual.component';
 
 
 export const routes: Routes = [
@@ -42,8 +43,12 @@ export const routes: Routes = [
         component: GuiasComponent
     },
     {
-        path: 'guias/guias-detalles',
+        path: 'guias/guias-detalles/:category',
         component: GuiasDetallesComponent
+    },
+    {
+        path: 'guias/guias-detalles/:category/:id',
+        component: GuiasIndividualComponent
     },
     {
         path: 'mascota/monitoreo/:id',

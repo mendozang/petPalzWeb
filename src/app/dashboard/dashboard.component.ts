@@ -95,8 +95,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.authService.currentUser$.subscribe(user => {
       if (user && user.id) {
         this.loadPets();
-        this.loadPetLocation(this.selectedPet.id);
-        this.loadReminders(this.currentDate);
       } else {
         console.error('No current user or user ID found.');
       }
@@ -115,27 +113,39 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   loadPets(): void {
     const currentUser = this.authService.getCurrentUser();
-    if (currentUser && currentUser.id) {
-      this.http.get(`https://petpalzapi.onrender.com/api/Usuario/${currentUser.id}`).subscribe(
-        (userData: any) => {
-          this.pets = Array.isArray(userData.mascotas) 
-            ? userData.mascotas 
-            : userData.mascotas?.$values || []; // Ensure it's an array
-          if (this.pets.length > 0) {
-            this.selectedPet = this.pets[0]; // Select the first pet by default
-            this.loadReminders(this.currentDate);
-            this.loadPetLocation(this.selectedPet.id);
-            this.loadHealthData(this.selectedPet.id);
-          }
-        },
-        error => {
-          console.error('Error fetching pets:', error);
-        }
-      );
-    } else {
+  
+    if (!currentUser || !currentUser.id) {
       console.error('No current user or user ID found.');
+      return;
     }
+  
+    console.log('Current user found:', currentUser);
+  
+    this.http.get(`https://petpalzapi.onrender.com/api/Usuario/${currentUser.id}`).subscribe(
+      (userData: any) => {
+        console.log("Fetched user data for pets:", userData);
+  
+        this.pets = Array.isArray(userData.mascotas)
+          ? userData.mascotas
+          : userData.mascotas?.$values || []; // Ensure it's an array
+  
+        if (this.pets.length > 0) {
+          this.selectedPet = this.pets[0]; // Select the first pet by default
+          console.log("Selected pet:", this.selectedPet);
+  
+          this.loadReminders(this.currentDate);
+          this.loadPetLocation(this.selectedPet.id);
+          this.loadHealthData(this.selectedPet.id);
+        } else {
+          console.warn("User has no registered pets.");
+        }
+      },
+      error => {
+        console.error('Error fetching pets:', error);
+      }
+    );
   }
+  
 
   loadReminders(date: Date): void {
     if (this.selectedPet) {
@@ -187,7 +197,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   async updateMap(lat: number, lng: number): Promise<void> {
     if (this.map) {
-      this.map.setView([lat, lng], 13);
+      this.map.setView([lat, lng], 18);
   
       const L = await import('leaflet'); // Dynamically import Leaflet
       L.marker([lat, lng]).addTo(this.map)

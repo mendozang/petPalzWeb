@@ -52,14 +52,6 @@ main.collapsed header h1 {
     justify-content: center;
 }
 
-.articles-body {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding-left: 1rem;
-    width: 100%;
-}
-
 
 #search-addon:hover {
     cursor: pointer;
@@ -88,54 +80,18 @@ div.input-group.input-group-lg {
     width: 100%;
 }
 
-.more-button {
-    background-color: $primary-purple !important;
-    color: $white-text !important;
-    border-radius: 5px;
-    width: 30%;
-  }
-
-  .all-articles {
-    display: flex;
-    flex-direction: column;
+.article-image img {
+    height: 250px;
     width: 100%;
-    gap: 1rem;
-  }
-
-  .article {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-style: solid;
+    object-fit: cover;
     border-radius: 1rem;
-    border-color: $container-purple;
-    box-shadow: 0 4px 10px $container-purple;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    background-color: $white-text;
-  }
+    margin-bottom: 2rem;
+}
 
-    .article-image img {
-        width: 100px;
-        height: 100px;
-        border-radius: 1rem;
-        object-fit: cover;
-    }
+.article-title {
+    margin-bottom: 1rem;
+}
 
-    .article-content {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding-left: 2rem;
-    }
-
-    .title-category {
-        margin-bottom: 1rem;
-    }
-
-    h5 {
-        margin-bottom: 0;
-    }
-
-    p {
-        margin-bottom: 0;
-    }
+.articles-body {
+    padding: 0rem 3rem 0rem 3rem;
+}

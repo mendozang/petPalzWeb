@@ -54,7 +54,7 @@ export class ConfiguracionComponent implements OnInit {
 
     this.authService.currentUser$.subscribe(user => {
       if (user) {
-        this.userName = user.nombre;
+        this.userName = user.name;
         this.userEmail = user.email;
       }
     });

@@ -28,7 +28,7 @@
           <div class="category">
             <img src="/assets/tubo.png" alt="illustracion tubo de ensayo">
             <h4>Heridas y hemorragias</h4>
-            <div class="category-row"><a routerLink="guias-detalles">
+            <div class="category-row"><a [routerLink]="['guias-detalles', 'Heridas y Hemorragias']">
               <h6>Cómo detener el sangrado y limpiar heridas</h6>
               <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
             </a>
@@ -38,7 +38,7 @@
             <img src="/assets/alimentos.png"
               alt="ilustracion alimentos de mascotas">
             <h4>Asfixia</h4>
-            <div class="category-row"><a routerLink="guias-detalles">
+            <div class="category-row"><a [routerLink]="['guias-detalles', 'Asfixia']">
               <h6>Qué hacer si tu mascota está atragantada</h6>
               <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
             </a>
@@ -48,11 +48,10 @@
             <img src="/assets/kit.png"
               alt="ilustracion kit de primeros auxilios">
             <h4>Intoxicación</h4>
-            <div class="category-row"><a routerLink="guias-detalles">
+            <div class="category-row"><a [routerLink]="['guias-detalles', 'Intoxicación']">
               <h6>Qué pasos seguir según el tóxico involucrado</h6>
               <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
             </a>
-          
             </div>
           </div>
         </div>
@@ -61,7 +60,7 @@
             <img src="/assets/veterinario.png"
               alt="ilustracion de veterinario y gato">
             <h4>Convulsiones</h4>
-            <div class="category-row"><a routerLink="guias-detalles">
+            <div class="category-row"><a [routerLink]="['guias-detalles', 'Convulsiones']">
               <h6>Cómo actuar mientras ocurre un episodio</h6>
               <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
             </a>
@@ -71,7 +70,7 @@
             <img src="/assets/parche.png"
               alt="ilustracion parche mascota">
             <h4>Fracturas y golpes</h4>
-            <div class="category-row"><a routerLink="guias-detalles">
+            <div class="category-row"><a [routerLink]="['guias-detalles', 'Fracturas y Golpes']">
               <h6>Inmovilización temporal y transporte seguro</h6>
               <mat-icon matSuffix class="arrow">arrow_forward_ios</mat-icon>
             </a>

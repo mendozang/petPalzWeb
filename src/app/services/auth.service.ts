@@ -33,19 +33,65 @@ export class AuthService {
   }
 
   async setCurrentUser(user: any): Promise<void> {
-    const freshUserData = await this.http.get(`${this.apiUrl}/${user.id}`).toPromise();
-    await this.indexedDBService.setUser(freshUserData);
-    localStorage.setItem('currentUser', JSON.stringify(freshUserData)); // Persist user to localStorage
-    this.currentUserSubject.next(freshUserData);
-  }
-
-  private async loadUserFromIndexedDB(): Promise<void> {
-    const user = await this.indexedDBService.getUser();
-    if (user) {
-      this.currentUserSubject.next(user);
-      localStorage.setItem('currentUser', JSON.stringify(user)); // Persist user to localStorage
+    try {
+      const freshUserData: any = await this.http.get(`${this.apiUrl}/${user.id}`).toPromise();
+      
+      if (!freshUserData) {
+        console.error("Error: No user data received from API.");
+        return;
+      }
+  
+      console.log("Fetched user data:", freshUserData); // Debugging step
+  
+      const pets = Array.isArray(freshUserData.mascotas) ? freshUserData.mascotas.map((pet: any) => ({ id: pet.id, name: pet.nombre })) : [];
+  
+      const basicUserData = {
+        id: freshUserData.id || null,
+        name: freshUserData.nombre || '',
+        email: freshUserData.email || '',
+        password: freshUserData.contraseña || '',
+        pets: freshUserData.mascotas
+      };
+  
+      console.log("Processed user data for storage:", basicUserData);
+  
+      if (!basicUserData.id) {
+        console.error("Error: User ID is missing from API response.");
+        return;
+      }
+  
+      await this.indexedDBService.setUser(basicUserData);
+      localStorage.setItem('currentUser', JSON.stringify(basicUserData));
+      this.currentUserSubject.next(basicUserData);
+    } catch (error) {
+      console.error("Error setting current user:", error);
     }
   }
+  
+
+  private async loadUserFromIndexedDB(): Promise<void> {
+    try {
+      const users = await this.indexedDBService.getUser();
+      
+      if (users && users.length > 0) {
+        const user = users[0];
+        console.log("User loaded from IndexedDB:", user);
+  
+        if (!user.id) {
+          console.error("Error: User ID missing in IndexedDB data.");
+          return;
+        }
+  
+        this.currentUserSubject.next(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        console.warn("No user found in IndexedDB.");
+      }
+    } catch (error) {
+      console.error("Error loading user from IndexedDB:", error);
+    }
+  }
+  
 
   async logout(): Promise<void> {
     await this.indexedDBService.deleteUser();

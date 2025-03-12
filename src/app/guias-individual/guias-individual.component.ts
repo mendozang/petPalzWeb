@@ -1,5 +1,5 @@
 import { Component, signal, OnInit, HostListener } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
@@ -7,22 +7,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-guias-detalles',
+  selector: 'app-guias-individual',
   imports: [
     SidebarComponent,
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    CommonModule,
-    RouterModule
+    CommonModule
   ],
-  templateUrl: './guias-detalles.component.html',
-  styleUrls: ['./guias-detalles.component.scss']
+  templateUrl: './guias-individual.component.html',
+  styleUrls: ['./guias-individual.component.scss']
 })
-export class GuiasDetallesComponent implements OnInit {
+export class GuiasIndividualComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
-  articles: any[] = [];
+  article: any = {};
   category: string = '';
+  id: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +45,8 @@ export class GuiasDetallesComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       this.category = params.get('category')!;
-      this.fetchArticles();
+      this.id = params.get('id')!;
+      this.fetchArticle();
     });
   }
 
@@ -60,10 +61,10 @@ export class GuiasDetallesComponent implements OnInit {
     }
   }
 
-  fetchArticles(): void {
-    this.http.get(`https://petpalzapi.onrender.com/api/PrimerosAuxilios/categoria/${encodeURIComponent(this.category)}`)
+  fetchArticle(): void {
+    this.http.get(`https://petpalzapi.onrender.com/api/PrimerosAuxilios/${this.id}`)
       .subscribe((data: any) => {
-        this.articles = data.$values || [];
+        this.article = data;
       });
   }
 }

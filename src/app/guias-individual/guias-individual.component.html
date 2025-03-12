@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <main [ngClass]="{'collapsed': isLeftSidebarCollapsed()}">
+        <app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+            (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"></app-sidebar>
+
+            <header>
+                <h1>Guías de primeros auxilios</h1>
+              </header>
+              <div class="body-trimmed">
+                <section class="main-body">
+
+
+                      <div class="articles-body">
+                        <h3 class="article-title">{{ article.titulo }}</h3>
+                        <div class="article-image">
+                          <img [src]="article.imagenUrl || '/assets/default-pet.png'" alt="Imagen del artículo">
+                        </div>
+                        <div class="article-content" [innerHTML]="article.contenido"></div>
+                      </div>
+                </section>
+              </div>    
+    </main>
+</body>
+
+</html>
