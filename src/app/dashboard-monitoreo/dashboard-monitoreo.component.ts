@@ -37,6 +37,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     if (this.isBrowser) {
       setTimeout(() => this.initializeChart(), 3);
+      this.requestNotificationPermission();
       if (this.selectedPetId) {
         this.fetchPetDetails(this.selectedPetId);
       }
@@ -46,7 +47,27 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedPetId'] && changes['selectedPetId'].currentValue) {
       this.clearCharts();
-      this.fetchPetDetails(this.selectedPetId);
+      this.fetchPetDetails(changes['selectedPetId'].currentValue);
+    }
+  }
+
+  requestNotificationPermission(): void {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          console.log('Notification permission granted.');
+        } else {
+          console.log('Notification permission denied.');
+        }
+      });
+    } else {
+      console.log('This browser does not support notifications.');
+    }
+  }
+
+  showNotification(title: string, body: string): void {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(title, { body });
     }
   }
 
@@ -55,7 +76,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
       console.error('No pet ID provided');
       return;
     }
-  
+
     this.http.get(`https://petpalzapi.onrender.com/api/Mascota/${petId}`).subscribe(
       (response: any) => {
         this.petSize = response.tamano;
@@ -93,31 +114,58 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
     this.pulso = healthData.pulso ?? 0;
     this.respiracion = healthData.respiracion ?? 0; // Use bracket notation
     this.vfc = healthData.vfc ?? 0;
-  
+
     console.log('Updated vital signs:', this.temperatura, this.pulso, this.respiracion, this.vfc); // Debugging
-  
+
+    this.checkHealthData();
     this.cdr.detectChanges(); // Trigger change detection
+  }
+
+  checkHealthData(): void {
+    const normalRange = normalRanges[this.petSpecies]?.[this.petSize];
+
+    if (!normalRange) {
+      console.error('Error: normalRange is undefined for petSize:', this.petSize, 'and petSpecies:', this.petSpecies);
+      return;
+    }
+
+    if (this.temperatura !== null && (this.temperatura < normalRange.temperatura[0] || this.temperatura > normalRange.temperatura[1])) {
+      this.showNotification('Alerta de Salud', `La temperatura de tu mascota está fuera del rango normal: ${this.temperatura} °C`);
+    }
+
+    if (this.pulso !== null && (this.pulso < normalRange.pulso[0] || this.pulso > normalRange.pulso[1])) {
+      this.showNotification('Alerta de Salud', `El pulso de tu mascota está fuera del rango normal: ${this.pulso} bpm`);
+    }
+
+    if (this.respiracion !== null && (this.respiracion < normalRange.respiracion[0] || this.respiracion > normalRange.respiracion[1])) {
+      this.showNotification('Alerta de Salud', `La respiración de tu mascota está fuera del rango normal: ${this.respiracion} rpm`);
+    }
+
+    if (this.vfc !== null && (this.vfc < normalRange.vfc[0] || this.vfc > normalRange.vfc[1])) {
+      this.showNotification('Alerta de Salud', `La VFC de tu mascota está fuera del rango normal: ${this.vfc} ms`);
+    }
   }
 
   updateCharts(healthData: any): void {
     console.log('Pet size:', this.petSize); // Debugging
     console.log('Pet species:', this.petSpecies); // Debugging
-  
+
     const normalRange = normalRanges[this.petSpecies]?.[this.petSize];
-  
+
     if (!normalRange) {
       console.error('Error: normalRange is undefined for petSize:', this.petSize, 'and petSpecies:', this.petSpecies);
       return;
     }
-  
+
     const getColor = (value: number, range: number[]) => {
       return value >= range[0] && value <= range[1] ? '#0ECBA1' : '#BA1A1A';
     };
-  
+
     const getRemainingValue = (value: number, range: number[]) => {
-      return range[1] - value;
+      const remainingValue = range[1] - value;
+      return remainingValue < 0 ? 0 : remainingValue;
     };
-  
+
     if (this.healthTemp && this.healthTemp.nativeElement) {
       const temp = this.healthTemp.nativeElement.getContext('2d');
       if (this.tempChart) this.tempChart.destroy();
@@ -136,7 +184,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
         }
       });
     }
-  
+
     if (this.healthRate && this.healthRate.nativeElement) {
       const rate = this.healthRate.nativeElement.getContext('2d');
       if (this.rateChart) this.rateChart.destroy();
@@ -155,7 +203,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
         }
       });
     }
-  
+
     if (this.healthBreathing && this.healthBreathing.nativeElement) {
       const breathing = this.healthBreathing.nativeElement.getContext('2d');
       if (this.breathingChart) this.breathingChart.destroy();
@@ -174,7 +222,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
         }
       });
     }
-  
+
     if (this.healthVfc && this.healthVfc.nativeElement) {
       const vfc = this.healthVfc.nativeElement.getContext('2d');
       if (this.vfcChart) this.vfcChart.destroy();
