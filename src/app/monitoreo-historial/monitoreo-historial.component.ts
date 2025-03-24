@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, signal, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { AgregarVacunaComponent } from '../agregar-vacuna/agregar-vacuna.component';
 import { AgregarEnfermedadComponent } from '../agregar-enfermedad/agregar-enfermedad.component';
 import { AgregarTratamientoComponent } from '../agregar-tratamiento/agregar-tratamiento.component';
@@ -13,6 +14,7 @@ import { EditarEnfermedadComponent } from '../editar-enfermedad/editar-enfermeda
 import { EditarTratamientoComponent } from '../editar-tratamiento/editar-tratamiento.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { CommonModule, DatePipe } from '@angular/common';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-monitoreo-historial',
@@ -22,23 +24,59 @@ import { CommonModule, DatePipe } from '@angular/common';
     MatButtonModule,
     MatMenuModule,
     MatDialogModule,
-    CommonModule
+    CommonModule,
+    SidebarComponent
   ],
   templateUrl: './monitoreo-historial.component.html',
   styleUrls: ['./monitoreo-historial.component.scss'],
   providers: [DatePipe]
 })
 export class MonitoreoHistorialComponent implements OnInit {
-  @Input() petId!: number;
+  petId!: number;
+  pet: any;
   historialMedico: any;
   vacunas: any[] = [];
   enfermedades: any[] = [];
   tratamientos: any[] = [];
+  isLeftSidebarCollapsed = signal<boolean>(false);
 
-  constructor(private dialog: MatDialog, private http: HttpClient, private datePipe: DatePipe) {}
+  changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
+    this.isLeftSidebarCollapsed.set(isLeftSidebarCollapsed);
+  }
+
+  screenWidth = signal<number>(0);
+
+  constructor(
+    private dialog: MatDialog,
+    private http: HttpClient,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
+  ) {
+    if (typeof window !== 'undefined') {
+      this.screenWidth.set(window.innerWidth);
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (typeof window !== 'undefined') {
+      this.screenWidth.set(window.innerWidth);
+      if (this.screenWidth() < 768) {
+        this.isLeftSidebarCollapsed.set(true);
+      } else {
+        this.isLeftSidebarCollapsed.set(false);
+      }
+    }
+  }
 
   ngOnInit(): void {
-    this.fetchHistorialMedico();
+    if (typeof window !== 'undefined') {
+      this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
+    }
+    this.route.paramMap.subscribe(params => {
+      this.petId = Number(params.get('petId'));
+      this.fetchHistorialMedico();
+    });
   }
 
   fetchHistorialMedico(): void {

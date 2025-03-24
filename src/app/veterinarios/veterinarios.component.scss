@@ -132,3 +132,10 @@ a {
     text-decoration: none;
     color: $white-text;
 }
+
+#map {
+    height: 700px;
+    width: 700px;
+    border-radius: 1rem;
+    z-index: 0;
+  }

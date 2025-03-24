@@ -23,13 +23,20 @@ main {
 .pet-card {
     display: flex;
     justify-content: space-between;
-    width: 300px;
+    width: 400px;
 }
 
 .right-side {
     display: flex;
     width: 500px;
     justify-content: space-between;
+}
+
+.left-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .all-info {
@@ -40,8 +47,8 @@ main {
 }
 
 .pet-image img{
-    height: 300px;
-  width: 300px;
+    height: 250px;
+  width: 250px;
   border-radius: 1rem;
   object-fit: cover; 
 }
@@ -60,9 +67,6 @@ main {
     font-weight: 600;
 }
 
-mat-icon {
-    color: $secondary-green;
-}
 
 .pet-info-item {
     display: flex;
@@ -95,18 +99,30 @@ mat-icon {
     align-items: center;
 }
 
+#gender-icon {
+    font-size: 2.5rem;
+    font-weight: 500;
+    height: 2.5rem;
+    width: 2.5rem;
+    overflow:visible;
+}
+
 .male-icon {
     color: #4285F4; /* Change to your desired color for male */
 }
 
 .female-icon {
     color: #F576AC; /* Change to your desired color for female */
+}   
+
+.pet-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
 }
 
-#gender-icon {
-    font-size: 3rem;
-    font-weight: 600;
-    height: 3rem;
-    width: 3rem;
-    overflow:visible;
+.historial-btn {
+    margin-top: 1rem;
 }

@@ -17,9 +17,13 @@
                     <h6>{{ pet?.raza }}</h6>
                 </div>
                 <div class="pet-gender">
-                    <mat-icon id="gender-icon" [ngClass]="{'male-icon': pet?.genero === '1', 'female-icon': pet?.genero === '2'}">
-                        {{ pet?.genero === '1' ? 'male' : 'female' }}
+                    <mat-icon id="gender-icon" [ngClass]="{'male-icon': pet?.genero === 'Macho', 'female-icon': pet?.genero === 'Hembra'}">
+                        {{ pet?.genero === 'Macho' ? 'male' : 'female' }}
                     </mat-icon>
+                </div>
+                <div class="pet-buttons">
+                    <button class="historial-btn" mat-flat-button [routerLink]="['/monitoreo-historial', pet?.id]">Ver Historial Médico</button>
+                    <button class="monitoreo-btn" mat-flat-button [routerLink]="['/monitoreo-salud', pet?.id]">Ver Monitoreo</button>
                 </div>
             </div>
         </div>

@@ -15,6 +15,8 @@ import { GuiasDetallesComponent } from './guias-detalles/guias-detalles.componen
 import { VeterinariosDetallesComponent } from './veterinarios-detalles/veterinarios-detalles.component';
 import { MascotaDetallesComponent } from './mascota-detalles/mascota-detalles.component';
 import { GuiasIndividualComponent } from './guias-individual/guias-individual.component';
+import { MonitoreoHistorialComponent } from './monitoreo-historial/monitoreo-historial.component';
+import { MonitoreoSaludComponent } from './monitoreo-salud/monitoreo-salud.component';
 
 
 export const routes: Routes = [
@@ -81,5 +83,13 @@ export const routes: Routes = [
     {
         path: 'agregar-recordatorio',
         component: AgregarRecordatorioComponent
+    },
+    {
+        path: 'monitoreo-historial/:petId',
+        component: MonitoreoHistorialComponent
+    },
+    {
+        path: 'monitoreo-salud/:petId',
+        component: MonitoreoSaludComponent
     }
 ];

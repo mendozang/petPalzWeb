@@ -1,14 +1,53 @@
 @import "../../styles.scss";
 
-main {
-    padding: 2rem 1rem 2rem 1rem;
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     background-color: $page-color;
+}
+
+body {
+    z-index: 0;
+    transition: all 0.5s ease;
+}
+
+.body-trimmed {
+    margin-left: 17rem;
+    transition: margin-left 0.5s ease;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     gap: 2rem;
 }
+
+header {
+    background-color: $primary-green;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.5s ease;
+}
+
+header h1 {
+    margin-left: 17rem;
+    color: $white-text;
+    padding-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: margin-left 0.5s ease;
+}
+
+main.collapsed .body-trimmed {
+    margin-left: 5rem;
+}
+
+main.collapsed header h1 {
+    margin-left: 5rem;
+}
+
 
 mat-expansion-panel {
     width: 100%;

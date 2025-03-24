@@ -9,23 +9,22 @@
   <div class="all-charts">
     <div class="chart-container">
       <h4>Temperatura</h4>
-      <div><canvas #healthTemp id="health-temp"></canvas></div>
-      <h6>{{ temperatura !== null ? temperatura + ' °C' : 'N/A' }}</h6>
+      <div id="health-temp" #healthTemp style="width: 250px; height: 200px;"></div>
     </div>
     <div class="chart-container">
       <h4>Pulso</h4>
-      <div><canvas #healthRate id="health-rate"></canvas></div>
-      <h6>{{ pulso !== null ? pulso + ' bpm' : 'N/A' }}</h6>
+      <div id="health-rate" #healthRate style="width: 250px; height: 200px;"></div>
+      
     </div>
     <div class="chart-container">
       <h4>Respiración</h4>
-      <div><canvas #healthBreathing id="health-breathing"></canvas></div>
-      <h6>{{ respiracion !== null ? respiracion + ' rpm' : 'N/A' }}</h6>
+      <div id="health-breathing" #healthBreathing style="width: 250px; height: 200px;"></div>
+   
     </div>
     <div class="chart-container">
       <h4>VFC</h4>
-      <div><canvas #healthVfc id="health-vfc"></canvas></div>
-      <h6>{{ vfc !== null ? vfc + ' ms' : 'N/A' }}</h6>
+      <div id="health-vfc" #healthVfc style="width: 250px; height: 200px;"></div>
+  
     </div>
   </div>
 </body>

@@ -1,10 +1,11 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { Chart, registerables } from 'chart.js';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import * as echarts from 'echarts';
 
 @Component({
   selector: 'app-dashboard-monitoreo',
+  imports: [CommonModule],
   templateUrl: './dashboard-monitoreo.component.html',
   styleUrls: ['./dashboard-monitoreo.component.scss']
 })
@@ -22,13 +23,14 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
   respiracion: number | null = null;
   vfc: number | null = null;
 
-  petSize: '1' | '2' | '3' | '4' | '5' = '1';
+  petSize: 'Mini (1 a 5 kilos)' | 'Pequeño (5 a 10 kilos)' | 'Mediano (10 a 25 kilos)' | 'Grande (25 a 45 kilos)' | 'Gigante (45+ kilos)'
+  | 'Pequeño (1 a 3 kilos)' | 'Mediano (3 a 6 kilos)' | 'Grande (6+ kilos)' = 'Mini (1 a 5 kilos)';
   petSpecies: 'Perro' | 'Gato' = 'Perro';
 
-  tempChart: Chart | null = null;
-  rateChart: Chart | null = null;
-  breathingChart: Chart | null = null;
-  vfcChart: Chart | null = null;
+  tempChart: echarts.ECharts | null = null;
+  rateChart: echarts.ECharts | null = null;
+  breathingChart: echarts.ECharts | null = null;
+  vfcChart: echarts.ECharts | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private cdr: ChangeDetectorRef) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -36,10 +38,12 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     if (this.isBrowser) {
-      setTimeout(() => this.initializeChart(), 3);
       this.requestNotificationPermission();
       if (this.selectedPetId) {
         this.fetchPetDetails(this.selectedPetId);
+        setTimeout(() => {
+          this.fetchHealthData(this.selectedPetId);
+        }, 1000);
       }
     }
   }
@@ -48,6 +52,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
     if (changes['selectedPetId'] && changes['selectedPetId'].currentValue) {
       this.clearCharts();
       this.fetchPetDetails(changes['selectedPetId'].currentValue);
+      this.fetchHealthData(changes['selectedPetId'].currentValue);
     }
   }
 
@@ -82,7 +87,6 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
         this.petSize = response.tamano;
         this.petSpecies = response.especie;
         console.log('Fetched pet details:', response); // Debugging
-        this.fetchHealthData(petId);
       },
       error => {
         console.error('Error fetching pet details:', error);
@@ -121,8 +125,11 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
     this.cdr.detectChanges(); // Trigger change detection
   }
 
+  outOfRangeAlerts: string[] = []; 
+
   checkHealthData(): void {
     const normalRange = normalRanges[this.petSpecies]?.[this.petSize];
+    this.outOfRangeAlerts = [];
 
     if (!normalRange) {
       console.error('Error: normalRange is undefined for petSize:', this.petSize, 'and petSpecies:', this.petSpecies);
@@ -131,6 +138,7 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
 
     if (this.temperatura !== null && (this.temperatura < normalRange.temperatura[0] || this.temperatura > normalRange.temperatura[1])) {
       this.showNotification('Alerta de Salud', `La temperatura de tu mascota está fuera del rango normal: ${this.temperatura} °C`);
+      this.outOfRangeAlerts.push(`⚠️ Temperatura fuera de rango: ${this.temperatura}°C`);
     }
 
     if (this.pulso !== null && (this.pulso < normalRange.pulso[0] || this.pulso > normalRange.pulso[1])) {
@@ -146,6 +154,16 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  calculateColorStops(range: number[], min: number, max: number): [number, string][] {
+    const lowerBound = (range[0] - min) / (max - min);
+    const upperBound = (range[1] - min) / (max - min);
+    return [
+      [lowerBound, '#50B39D'],
+      [upperBound, '#16D2A8'],
+      [1, '#fd666d']
+    ];
+  }
+
   updateCharts(healthData: any): void {
     console.log('Pet size:', this.petSize); // Debugging
     console.log('Pet species:', this.petSpecies); // Debugging
@@ -157,102 +175,265 @@ export class DashboardMonitoreoComponent implements AfterViewInit, OnChanges {
       return;
     }
 
-    const getColor = (value: number, range: number[]) => {
-      return value >= range[0] && value <= range[1] ? '#0ECBA1' : '#BA1A1A';
-    };
-
-    const getRemainingValue = (value: number, range: number[]) => {
-      const remainingValue = range[1] - value;
-      return remainingValue < 0 ? 0 : remainingValue;
-    };
+    const minTemp = 35;
+    const maxTemp = 42;
+    const minPulse = 60;
+    const maxPulse = 230;
+    const minRespiration = 10;
+    const maxRespiration = 50;
+    const minVfc = 10;
+    const maxVfc = 110;
 
     if (this.healthTemp && this.healthTemp.nativeElement) {
-      const temp = this.healthTemp.nativeElement.getContext('2d');
-      if (this.tempChart) this.tempChart.destroy();
-      this.tempChart = new Chart(temp, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            label: 'Temperatura',
-            data: [healthData.temperatura, getRemainingValue(healthData.temperatura, normalRange.temperatura)],
-            backgroundColor: [getColor(healthData.temperatura, normalRange.temperatura), '#E9EDF0']
-          }]
-        },
-        options: {
-          responsive: false,
-          maintainAspectRatio: false
-        }
-      });
+      const temp = this.healthTemp.nativeElement;
+      if (this.tempChart) this.tempChart.dispose();
+      this.tempChart = echarts.init(temp);
+      const tempOption = {
+        series: [
+          {
+            type: 'gauge',
+            min: minTemp,
+            max: maxTemp,
+            splitNumber: 5,
+            axisLine: {
+              lineStyle: {
+                width: 30,
+                color: this.calculateColorStops(normalRange.temperatura, minTemp, maxTemp)
+              }
+            },
+            pointer: {
+              itemStyle: {
+                color: 'auto'
+              }
+            },
+            axisTick: {
+              distance: -30,
+              length: 8,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            splitLine: {
+              distance: -30,
+              length: 30,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            axisLabel: {
+              color: 'inherit',
+              distance: -30,
+              fontSize: 12
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: '{value} °C',
+              color: 'inherit',
+              offsetCenter: [0, '70%'],
+              fontSize: 20
+            },
+            data: [
+              {
+                value: healthData.temperatura
+              }
+            ]
+          }
+        ]
+      };
+      this.tempChart.setOption(tempOption);
     }
 
     if (this.healthRate && this.healthRate.nativeElement) {
-      const rate = this.healthRate.nativeElement.getContext('2d');
-      if (this.rateChart) this.rateChart.destroy();
-      this.rateChart = new Chart(rate, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            label: 'Ritmo Cardíaco',
-            data: [healthData.pulso, getRemainingValue(healthData.pulso, normalRange.pulso)],
-            backgroundColor: [getColor(healthData.pulso, normalRange.pulso), '#E9EDF0']
-          }]
-        },
-        options: {
-          responsive: false,
-          maintainAspectRatio: false
-        }
-      });
+      const rate = this.healthRate.nativeElement;
+      if (this.rateChart) this.rateChart.dispose();
+      this.rateChart = echarts.init(rate);
+      const rateOption = {
+        series: [
+          {
+            type: 'gauge',
+            min: minPulse,
+            max: maxPulse,
+            splitNumber: 5,
+            axisLine: {
+              lineStyle: {
+                width: 30,
+                color: this.calculateColorStops(normalRange.pulso, minPulse, maxPulse)
+              }
+            },
+            pointer: {
+              itemStyle: {
+                color: 'auto'
+              }
+            },
+            axisTick: {
+              distance: -30,
+              length: 8,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            splitLine: {
+              distance: -30,
+              length: 30,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            axisLabel: {
+              color: 'inherit',
+              distance: -30,
+              fontSize: 12
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: '{value} bpm',
+              color: 'inherit',
+              offsetCenter: [0, '70%'],
+              fontSize: 18
+            },
+            data: [
+              {
+                value: healthData.pulso
+              }
+            ]
+          }
+        ]
+      };
+      this.rateChart.setOption(rateOption);
     }
 
     if (this.healthBreathing && this.healthBreathing.nativeElement) {
-      const breathing = this.healthBreathing.nativeElement.getContext('2d');
-      if (this.breathingChart) this.breathingChart.destroy();
-      this.breathingChart = new Chart(breathing, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            label: 'Respiración',
-            data: [healthData.respiracion, getRemainingValue(healthData.respiracion, normalRange.respiracion)],
-            backgroundColor: [getColor(healthData.respiracion, normalRange.respiracion), '#E9EDF0']
-          }]
-        },
-        options: {
-          responsive: false,
-          maintainAspectRatio: false
-        }
-      });
+      const breathing = this.healthBreathing.nativeElement;
+      if (this.breathingChart) this.breathingChart.dispose();
+      this.breathingChart = echarts.init(breathing);
+      const breathingOption = {
+        series: [
+          {
+            type: 'gauge',
+            min: minRespiration,
+            max: maxRespiration,
+            splitNumber: 5,
+            axisLine: {
+              lineStyle: {
+                width: 30,
+                color: this.calculateColorStops(normalRange.respiracion, minRespiration, maxRespiration)
+              }
+            },
+            pointer: {
+              itemStyle: {
+                color: 'auto'
+              }
+            },
+            axisTick: {
+              distance: -30,
+              length: 8,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            splitLine: {
+              distance: -30,
+              length: 30,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            axisLabel: {
+              color: 'inherit',
+              distance: -30,
+              fontSize: 12
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: '{value} rpm',
+              color: 'inherit',
+              offsetCenter: [0, '70%'],
+              fontSize: 20
+            },
+            data: [
+              {
+                value: healthData.respiracion
+              }
+            ]
+          }
+        ]
+      };
+      this.breathingChart.setOption(breathingOption);
     }
 
     if (this.healthVfc && this.healthVfc.nativeElement) {
-      const vfc = this.healthVfc.nativeElement.getContext('2d');
-      if (this.vfcChart) this.vfcChart.destroy();
-      this.vfcChart = new Chart(vfc, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            label: 'VFC',
-            data: [healthData.vfc, getRemainingValue(healthData.vfc, normalRange.vfc)],
-            backgroundColor: [getColor(healthData.vfc, normalRange.vfc), '#E9EDF0']
-          }]
-        },
-        options: {
-          responsive: false,
-          maintainAspectRatio: false
-        }
-      });
+      const vfc = this.healthVfc.nativeElement;
+      if (this.vfcChart) this.vfcChart.dispose();
+      this.vfcChart = echarts.init(vfc);
+      const vfcOption = {
+        series: [
+          {
+            type: 'gauge',
+            min: minVfc,
+            max: maxVfc,
+            splitNumber: 5,
+            axisLine: {
+              lineStyle: {
+                width: 30,
+                color: this.calculateColorStops(normalRange.vfc, minVfc, maxVfc)
+              }
+            },
+            pointer: {
+              itemStyle: {
+                color: 'auto'
+              }
+            },
+            axisTick: {
+              distance: -30,
+              length: 8,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            splitLine: {
+              distance: -30,
+              length: 30,
+              lineStyle: {
+                color: '#fff',
+                width: 0
+              }
+            },
+            axisLabel: {
+              color: 'inherit',
+              distance: -30,
+              fontSize: 12
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: '{value} ms',
+              color: 'inherit',
+              offsetCenter: [0, '70%'],
+              fontSize: 20
+            },
+            data: [
+              {
+                value: healthData.vfc
+              }
+            ]
+          }
+        ]
+      };
+      this.vfcChart.setOption(vfcOption);
     }
   }
 
   clearCharts(): void {
-    if (this.tempChart) this.tempChart.destroy();
-    if (this.rateChart) this.rateChart.destroy();
-    if (this.breathingChart) this.breathingChart.destroy();
-    if (this.vfcChart) this.vfcChart.destroy();
-  }
-
-  //health charts
-  initializeChart(): void {
-    Chart.register(...registerables);
+    if (this.tempChart) this.tempChart.dispose();
+    if (this.rateChart) this.rateChart.dispose();
+    if (this.breathingChart) this.breathingChart.dispose();
+    if (this.vfcChart) this.vfcChart.dispose();
   }
 }
 
@@ -269,15 +450,15 @@ interface NormalRanges {
 
 const normalRanges: NormalRanges = {
   'Perro': {
-    '1': { temperatura: [38, 39], pulso: [120, 160], respiracion: [20, 40], vfc: [40, 80] },
-    '2': { temperatura: [38, 39], pulso: [100, 140], respiracion: [18, 35], vfc: [35, 75] },
-    '3': { temperatura: [38, 39], pulso: [80, 120], respiracion: [16, 30], vfc: [30, 70] },
-    '4': { temperatura: [38, 39], pulso: [70, 100], respiracion: [14, 25], vfc: [25, 65] },
-    '5': { temperatura: [38, 39], pulso: [60, 90], respiracion: [12, 20], vfc: [20, 60] }
+    'Mini (1 a 5 kilos)': { temperatura: [38, 39], pulso: [120, 160], respiracion: [20, 40], vfc: [40, 80] },
+    'Pequeño (5 a 10 kilos)': { temperatura: [38, 39], pulso: [100, 140], respiracion: [18, 35], vfc: [35, 75] },
+    'Mediano (10 a 25 kilos)': { temperatura: [38, 39], pulso: [80, 120], respiracion: [16, 30], vfc: [30, 70] },
+    'Grande (25 a 45 kilos)': { temperatura: [38, 39], pulso: [70, 100], respiracion: [14, 25], vfc: [25, 65] },
+    'Gigante (45+ kilos)': { temperatura: [38, 39], pulso: [60, 90], respiracion: [12, 20], vfc: [20, 60] }
   },
   'Gato': {
-    '1': { temperatura: [38, 39.5], pulso: [150, 220], respiracion: [20, 40], vfc: [50, 100] },
-    '2': { temperatura: [38, 39.5], pulso: [140, 200], respiracion: [16, 35], vfc: [45, 95] },
-    '3': { temperatura: [38, 39.5], pulso: [120, 180], respiracion: [12, 30], vfc: [40, 90] }
+    'Pequeño (1 a 3 kilos)': { temperatura: [38, 39.5], pulso: [150, 220], respiracion: [20, 40], vfc: [50, 100] },
+    'Mediano (3 a 6 kilos)': { temperatura: [38, 39.5], pulso: [140, 200], respiracion: [16, 35], vfc: [45, 95] },
+    'Grande (6+ kilos)': { temperatura: [38, 39.5], pulso: [120, 180], respiracion: [12, 30], vfc: [40, 90] }
   }
 };
