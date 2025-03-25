@@ -96,26 +96,45 @@ export class MascotaComponent implements OnInit {
     }
 
     this.selectedDate = new Date();
-    this.loadPets();
-    this.loadReminders(this.selectedDate);
+    this.loadPets(() => {
+      this.loadReminders(this.selectedDate);
+    });
   }
 
-  loadPets(): void {
+
+  loadPets(callback?: () => void): void {
     const currentUser = this.authService.getCurrentUser();
     if (currentUser) {
       this.http.get(`https://petpalzapi.onrender.com/api/Usuario/${currentUser.id}`).subscribe(
         (userData: any) => {
-          console.log('User data:', userData); // Log the user data to check the structure
+          console.log('User data:', userData);
           this.pets = Array.isArray(userData.mascotas) 
             ? userData.mascotas 
-            : userData.mascotas?.$values || []; // Ensure it's an array
-          console.log('Pets:', this.pets); // Log the pets to check the structure
+            : userData.mascotas?.$values || [];
+          console.log('Pets:', this.pets);
+          
           this.cdr.detectChanges();
+          
+          // Execute callback (if provided) after pets have been loaded
+          if (callback) {
+            callback();
+          }
         },
         error => {
           console.error('Error fetching pets:', error);
         }
       );
+    }
+  }
+  
+
+  getDefaultImageUrl(pet: any): string {
+    if (pet.especie === 'Gato') {
+      return '/assets/default-pet-cat.png';
+    } else if (pet.especie === 'Perro') {
+      return '/assets/default-pet-dog.png';
+    } else {
+      return '/assets/default-pet.png';
     }
   }
 

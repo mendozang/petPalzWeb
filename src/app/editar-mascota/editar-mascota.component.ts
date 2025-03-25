@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, Inject } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,12 +43,13 @@ export class EditarMascotaComponent implements OnInit {
   selectedFileName: string | null = null;
   selectedFile: File | null = null;
   imageUrl: string | ArrayBuffer | null = '/assets/default-pet.png';
-  form: FormGroup;
+  form!: FormGroup;
   breeds: { [key: string]: string[] } = {};
   breedOptions: string[] = [];
   filteredBreedOptions: Observable<string[]> = new Observable<string[]>();
   currentUser: any;
   pet: any;
+  petData: any;
   sizeOptions: { [key: string]: { value: string, viewValue: string }[] } = {
     'Perro': [
       { value: '1', viewValue: 'Mini (1 a 5 kilos)' },
@@ -78,19 +79,10 @@ export class EditarMascotaComponent implements OnInit {
     private indexedDBService: IndexedDBService,
     private dialogRef: MatDialogRef<EditarMascotaComponent>,
     private dialog: MatDialog,
+    private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.pet = data.pet;
-    this.form = this.fb.group({
-      petname: [this.pet.nombre, [Validators.required, Validators.minLength(3)]],
-      species: [this.pet.especie, Validators.required],
-      breed: [this.pet.raza],
-      birthyear: [this.pet.anoNacimiento, Validators.required],
-      gender: [this.pet.genero],
-      color: [this.pet.color],
-      weight: [this.pet.peso],
-      size: [this.pet.tamano]
-    });
   }
 
   ngOnInit(): void {
@@ -98,10 +90,65 @@ export class EditarMascotaComponent implements OnInit {
       this.currentUser = user;
     });
 
-    this.http.get<{ [key: string]: string[] }>('/assets/breeds.json').subscribe((data: { [key: string]: string[] }) => {
-      this.breeds = data;
+    this.form = this.fb.group({
+      petname: ['', [Validators.required, Validators.minLength(3)]],
+      species: ['', Validators.required],
+      breed: [''],
+      birthyear: ['', Validators.required],
+      gender: [''],
+      color: [''],
+      weight: [''],
+      size: ['']
     });
 
+    // Fetch breeds data
+    this.http.get<{ [key: string]: string[] }>('/assets/breeds.json').subscribe((data: { [key: string]: string[] }) => {
+      this.breeds = data;
+
+      // Fetch full pet details using the pet ID
+      this.http.get(`https://petpalzapi.onrender.com/api/Mascota/${this.pet}`).subscribe(
+        (petData: any) => {
+          this.petData = petData; // Store full pet details
+          console.log('Full pet data:', this.petData);
+    
+          // Initialize breed and size options after fetching pet details
+          this.breedOptions = this.breeds[this.petData.especie] || [];
+          this.currentSizeOptions = this.sizeOptions[this.petData.especie] || [];
+          this.filteredBreedOptions = this.form.get('breed')!.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterBreeds(value || ''))
+          );
+    
+          // Now initialize the form with the full data
+          this.form.patchValue({
+            petname: this.petData.nombre,
+            species: this.petData.especie,
+            breed: this.petData.raza,
+            birthyear: this.petData.anoNacimiento,
+            gender: this.petData.genero,
+            color: this.petData.color,
+            weight: this.petData.peso,
+            size: this.petData.tamano
+          });
+    
+          // Set the image URL
+          this.imageUrl = this.petData.imagenUrl || '/assets/default-pet.png';
+    
+          this.cdr.detectChanges(); // Ensure Angular updates the form
+        },
+        error => {
+          console.error('Error fetching pet details:', error);
+        }
+      );
+    });
+  
+    // Generate a list of years from 2000 to the current year
+    const currentYear = new Date().getFullYear();
+    for (let year = 2000; year <= currentYear; year++) {
+      this.years.push(year);
+    }
+  
+    // Listen for species changes
     this.form.get('species')?.valueChanges.subscribe((species: string) => {
       this.breedOptions = this.breeds[species] || [];
       this.form.get('breed')?.setValue('');
@@ -109,18 +156,13 @@ export class EditarMascotaComponent implements OnInit {
         startWith(''),
         map(value => this._filterBreeds(value || ''))
       );
-
+  
       // Update size options based on selected species
       this.currentSizeOptions = this.sizeOptions[species] || [];
       this.form.get('size')?.setValue('');
     });
-
-    // Generate a list of years from 2000 to the current year
-    const currentYear = new Date().getFullYear();
-    for (let year = 2000; year <= currentYear; year++) {
-      this.years.push(year);
-    }
   }
+  
 
   private _filterBreeds(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -168,7 +210,7 @@ export class EditarMascotaComponent implements OnInit {
     }
 
     try {
-      await this.http.put(`https://petpalzapi.onrender.com/api/Mascota/${this.pet.id}`, updateData).toPromise();
+      await this.http.put(`https://petpalzapi.onrender.com/api/Mascota/${this.pet}`, updateData).toPromise();
       if (this.selectedFile) {
         await this.indexedDBService.setImage(this.pet.id, this.imageUrl as string);
       }

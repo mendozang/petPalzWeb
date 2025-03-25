@@ -32,7 +32,7 @@
         <div *ngIf="selectedFileName">{{ selectedFileName }}</div>
       </div>
       <div class="right-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <mat-form-field appearance="outline">
               <input matInput type="text" placeholder="Nombre" formControlName="petname" />
@@ -40,8 +40,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Especie</mat-label>
               <mat-select formControlName="species">
-                <mat-option value="Gato">Gato</mat-option>
-                <mat-option value="Perro">Perro</mat-option>
+                <mat-option *ngFor="let species of ['Perro', 'Gato']" [value]="species">{{ species }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

@@ -199,8 +199,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.map) {
       this.map.setView([lat, lng], 18);
   
-      const L = await import('leaflet'); // Dynamically import Leaflet
-      L.marker([lat, lng]).addTo(this.map)
+      const L = await import('leaflet'); 
+
+      const defaultIcon = L.icon({
+        iconUrl: 'assets/marker-icon.png',
+        shadowUrl: 'assets/marker-shadow.png',
+        iconSize: [25, 41], // Default Leaflet size
+        iconAnchor: [12, 41], // Adjust anchor point
+        popupAnchor: [1, -34]
+      });
+      
+      L.marker([lat, lng], { icon: defaultIcon }).addTo(this.map)
         .bindPopup('Ubicación actual de la mascota.')
         .openPopup();
     }

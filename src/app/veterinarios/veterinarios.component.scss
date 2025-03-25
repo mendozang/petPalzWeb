@@ -1,16 +1,17 @@
 @import "../../styles.scss";
 
-html,
-body {
+html {
     height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: $page-color;
+    background-color: $page-color; // Set background color on html element
 }
 
 body {
+    height: auto;
+    margin: 0;
+    padding: 0;
     z-index: 0;
     transition: all 0.5s ease;
+    background-color: $page-color;
 }
 
 .body-trimmed {
@@ -76,12 +77,15 @@ mat-icon {
     margin-top: 2rem;
 }
 
-.map {
+.vets-map {
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     background-color: $white-text;
-    width: 700;
+    width: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .vet {
@@ -92,6 +96,8 @@ mat-icon {
     width: 300px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
 }
 
 .rating {
@@ -107,6 +113,7 @@ mat-icon {
     color: $secondary-green;
     height: 1.5rem;
     width: 1.5rem;
+    overflow: visible;
 }
 
 .hours,
@@ -134,8 +141,9 @@ a {
 }
 
 #map {
-    height: 700px;
-    width: 700px;
+    height: 600px;
+    width: 600px;
     border-radius: 1rem;
-    z-index: 0;
-  }
+    z-index: 1000;
+    overflow: hidden;
+}

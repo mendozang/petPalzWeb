@@ -13,25 +13,29 @@
       <h1>Monitoreo de salud</h1>
     </header>
     <div class="body-trimmed">
-    <div class="all-charts">
-      <div class="chart-container">
-        <h4>Temperatura</h4>
-        <div id="health-temp" #healthTemp style="width: 250px; height: 200px;"></div>      
-      </div>
-      <div class="chart-container">
-        <h4>Pulso</h4>
-        <div id="health-rate" #healthRate style="width: 250px; height: 200px;"></div>    
-      </div>
-      <div class="chart-container">
-        <h4>Respiración</h4>
-        <div id="health-breathing" #healthBreathing style="width: 250px; height: 200px;"></div>
-      </div>
-      <div class="chart-container">
-        <h4>VFC</h4>
-        <div id="health-vfc" #healthVfc style="width: 250px; height: 200px;"></div>
+      <div class="all-charts">
+        <div class="chart-container">
+          <h4>Temperatura</h4>
+          <div id="health-temp" #healthTemp style="width: 250px; height: 200px;"></div>
+          <div class="message"><p *ngIf="tempMessage">{{ tempMessage }}</p></div>
+        </div>
+        <div class="chart-container">
+          <h4>Pulso</h4>
+          <div id="health-rate" #healthRate style="width: 250px; height: 200px;"></div>
+          <div class="message"><p *ngIf="rateMessage">{{ rateMessage }}</p></div>
+        </div>
+        <div class="chart-container">
+          <h4>Respiración</h4>
+          <div id="health-breathing" #healthBreathing style="width: 250px; height: 200px;"></div>
+          <div class="message"><p *ngIf="breathingMessage">{{ breathingMessage }}</p></div>
+        </div>
+        <div class="chart-container">
+          <h4>VFC</h4>
+          <div id="health-vfc" #healthVfc style="width: 250px; height: 200px;"></div>
+          <div class="message"><p *ngIf="vfcMessage">{{ vfcMessage }}</p></div>
+        </div>
       </div>
     </div>
-  </div>
   </main>
 </body>
 </html>

@@ -42,6 +42,11 @@ export class MonitoreoSaludComponent implements OnInit {
   breathingChart: echarts.ECharts | null = null;
   vfcChart: echarts.ECharts | null = null;
 
+  tempMessage: string | null = null;
+  rateMessage: string | null = null;
+  breathingMessage: string | null = null;
+  vfcMessage: string | null = null;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private http: HttpClient,
@@ -145,6 +150,12 @@ export class MonitoreoSaludComponent implements OnInit {
       return;
     }
 
+    this.tempMessage = this.generateMessage(this.temperatura ?? 0, normalRange.temperatura, 'Temperatura', 'La fiebre alta en perros puede tener muchas causas, entre ellas infecciones, golpes de calor, enfermedades inmunomediadas, o envenenamiento', 'La temperatura baja en perros puede ser causada por hipotermia, shock, o enfermedades metabólicas.');
+    this.rateMessage = this.generateMessage(this.pulso ?? 0, normalRange.pulso, 'Pulso', 'El pulso alto en perros puede ser causado por estrés, dolor, fiebre, o enfermedades cardíacas.', 'El pulso bajo en perros puede ser causado por enfermedades cardíacas, hipotermia, o ciertos medicamentos.');
+    this.breathingMessage = this.generateMessage(this.respiracion ?? 0, normalRange.respiracion, 'Respiración', 'La respiración rápida en perros puede ser causada por estrés, dolor, fiebre, o enfermedades respiratorias.', 'La respiración lenta en perros puede ser causada por enfermedades respiratorias, hipotermia, o ciertos medicamentos.');
+    this.vfcMessage = this.generateMessage(this.vfc ?? 0, normalRange.vfc, 'VFC', 'La VFC alta en perros puede ser causada por estrés, dolor, fiebre, o enfermedades cardíacas.', 'La VFC baja en perros puede ser causada por enfermedades cardíacas, hipotermia, o ciertos medicamentos.');
+
+
     if (this.temperatura !== null && (this.temperatura < normalRange.temperatura[0] || this.temperatura > normalRange.temperatura[1])) {
       this.showNotification('Alerta de Salud', `La temperatura de tu mascota está fuera del rango normal: ${this.temperatura} °C`);
     }
@@ -160,6 +171,15 @@ export class MonitoreoSaludComponent implements OnInit {
     if (this.vfc !== null && (this.vfc < normalRange.vfc[0] || this.vfc > normalRange.vfc[1])) {
       this.showNotification('Alerta de Salud', `La VFC de tu mascota está fuera del rango normal: ${this.vfc} ms`);
     }
+  }
+
+  generateMessage(value: number, range: number[], label: string, highMessage: string, lowMessage: string): string | null {
+    if (value < range[0]) {
+      return `⚠️ ${label} muy baja: ${value}°.\n ${lowMessage}`;
+    } else if (value > range[1]) {
+      return `⚠️ ${label} muy alta: ${value}°.\n ${highMessage}`;
+    }
+    return null;
   }
 
   calculateColorStops(range: number[], min: number, max: number): [number, string][] {
@@ -186,7 +206,7 @@ export class MonitoreoSaludComponent implements OnInit {
     const minTemp = 35;
     const maxTemp = 42;
     const minPulse = 60;
-    const maxPulse = 200;
+    const maxPulse = 230;
     const minRespiration = 10;
     const maxRespiration = 50;
     const minVfc = 10;
@@ -245,7 +265,7 @@ export class MonitoreoSaludComponent implements OnInit {
             },
             data: [
               {
-                value: healthData.temperatura
+                value: healthData.temperatura ?? 0
               }
             ]
           }
@@ -306,7 +326,7 @@ export class MonitoreoSaludComponent implements OnInit {
             },
             data: [
               {
-                value: healthData.pulso
+                value: healthData.pulso ?? 0
               }
             ]
           }
@@ -367,7 +387,7 @@ export class MonitoreoSaludComponent implements OnInit {
             },
             data: [
               {
-                value: healthData.respiracion
+                value: healthData.respiracion ?? 0
               }
             ]
           }
@@ -428,7 +448,7 @@ export class MonitoreoSaludComponent implements OnInit {
             },
             data: [
               {
-                value: healthData.vfc
+                value: healthData.vfc ?? 0
               }
             ]
           }
